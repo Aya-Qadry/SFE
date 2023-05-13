@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <footer th:fragment="footer">
+    <div>
+      <p>you have reached the end of the page</p>
+    </div>
+  </footer>
+
+  <div class="content" th:fragment="nav">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <img src="/images/name.jpg" alt="" width="215" height="20" class="d-inline-block align-text-top">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">----</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">----</a>
+            </li>
+          </ul>
+          <form th:action="@{/do_logout}" method="post" class="d-flex">
+            <button class="btn btn-outline-success" type="submit" value="logout"
+              style="margin-right: 10px;">Logout</button>
+          </form>
+          <a th:href="@{/adminhome/user/settings}"><i class="far fa-user-circle fa-lg" style="color: #5f665c;"></i></a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <div th:fragment="menu">
+    <div class="sidebar" id="side_nave">
+      <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
+        <!-- <h1 class="fs-4" th:text="${#authentication.principal.getUser().getUsername()}">Hello </h1> -->
+        <!-- <button class="btn d-mb-none d-block close-btn px-1 py-0 text-white"><i class="fal fa-stream"></i></button> -->
+      </div>
+
+      <ul class="list-unstyled px-2">
+        <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-home"></i>
+            Home</a></li>
+
+        <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-user-tag"></i>
+            Vendors</a>
+          <ul class="sub-menu" style="list-style: none ;">
+            <li><a th:href="@{/adminhome/list}" class="text-decoration-none px-3 py-2 d-block"><i
+                  class="fal fa-list-ul"></i> Show list of vendors</a></li>
+            <li><a th:href="@{/adminhome/vendorform}" class="text-decoration-none px-3 py-2 d-block"><i
+                  class="fal fa-plus"></i> Add a vendor</a></li>
+          </ul>
+        </li>
+
+        <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-apple-alt"></i>
+            Products</a>
+          <ul class="sub-menu" style="list-style: none ;">
+            <li><a th:href="@{/adminhome/products/categories}" class="text-decoration-none px-3 py-2 d-block"><i
+                  class="fal fa-table"></i> Product categories </a></li>
+            <li><a th:href="@{/adminhome/products/listproducts}" class="text-decoration-none px-3 py-2 d-block"><i
+                  class="fal fa-list-ul"></i> Show list of products </a></li>
+            <li><a th:href="@{/adminhome/products/addproduct}" class="text-decoration-none px-3 py-2 d-block"><i
+                  class="far fa-plus"></i> Add a product </a></li>
+          </ul>
+        </li>
+
+        <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-boxes"></i> Orders</a>
+        </li>
+
+        <li class=""><a th:href="@{/adminhome/requests}" class="text-decoration-none px-3 py-2 d-block"><i
+              class="fal fa-folder-open"></i> Requests</a></li>
+
+        <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-users"></i> Users</a>
+          <ul class="sub-menu" style="list-style: none ;">
+            <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-list-ul"></i> Show list of
+                users</a></li>
+            <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-plus"></i> Add a user</a>
+            </li>
+          </ul>
+        </li>
+
+        <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-cogs"></i> Configuration</a>
+          <ul class="sub-menu" style="list-style: none;">
+            <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-truck"></i> Shipping
+                options</a></li>
+            <li><a th:href="@{/adminhome/configuration/listunits}" class="text-decoration-none px-3 py-2 d-block"><i
+                  class="far fa-weight-hanging"></i> Mesurement units</a></li>
+          </ul>
+        </li>
+
+        <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-inventory"></i> Stock
+            management</a></li>
+
+      </ul>
+
+      <hr class="h-color mx-3 ">
+
+      <ul class="list-untyled px-2 ">
+      </ul>
+    </div>
+  </div>
+
+</body>
+
+</html>

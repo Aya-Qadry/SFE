@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avon Fruits</title>
+
+    <script src="/js/signup.js"></script>
+    <link rel="stylesheet" href="/css/signup.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+    crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" 
+    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" 
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+    crossorigin="anonymous"></script>
+
+  </head>
+
+<body> 
+    <div class="container">
+
+        <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Registration Info</h3>
+        </div>
+
+        <form th:action="@{/signup}" method="post" th:object="${request}" id="form">
+            
+ <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                    <input type="text" id="firstname" class="form-control form-control-lg" th:field="*{firstname}" autofocus/>
+                    <label class="form-label" for="firstname">First name</label>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                    <input type="text" id="lastname" class="form-control form-control-lg"  th:field="*{lastname}"/>
+                    <label class="form-label" for="lastname">Last name</label>
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-floating">
+                <input type="text" id="cin" class="form-control form-control-lg"  th:field="*{cin}"/>
+                <label class="form-label" for="cin">CIN</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-floating mb-4">
+                  <input type="text" id="phonenumber" class="form-control form-control-lg" th:field="*{phonenumber}"/>
+                  <label class="form-label" for="phonenumber">Phone number</label>
+                </div>
+              </div>
+            </div>
+                
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <!-- <label class="form-label">Gender </label> -->
+                <select th:field="*{gender}" class="form-select">
+                  <option value="">Select a gender</option>
+                  <option th:value="'Male'" th:text="Male"></option>
+                  <option th:value="'Female'" th:text="Female"></option>
+               </select>
+            </div>
+            </div>
+            <!-- <div th:object="${deliveryAddress}">
+              <div class="row" >
+                <div class="col-md-6 mb-4">
+                  <label class="form-label" for="city">City </label>
+                  <select  id="city-select" name="city" class="form-select">
+                      <option value="">Select a city</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                  <input type="text" id="zipcode" class="form-control form-control-lg"  th:field="*{zipcode}"/>
+                  <label class="form-label" for="zipcode">Zip code</label>
+                  </div>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-md-13 mb-4">
+                <div class="form-floating mb-4">
+                  <input type="text" id="address" class="form-control form-control-lg" th:field="*{addressline}"/>
+                  <label class="form-label" for="address">Delivery address</label>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        
+            <div class="row">
+              <div class="col-md-13 mb-4">
+                <div class="form-floating mb-4">
+                  <input type="text" id="emailaddress" class="form-control form-control-lg" th:field="*{emailaddress}"/>
+                  <label class="form-label" for="emailaddress">Email address</label>
+                </div>
+              </div>
+            </div>
+              <div class="form-floating mb-4 position-relative">
+                <input type="password" id="password" class="form-control form-control-lg" th:field="*{password}" />
+                <label class="form-label" for="password" >Password</label>
+                <span class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y" id="togglePassword"></span>
+              </div>
+              <div class="form-floating mb-4 position-relative">
+                <input type="password" id="passwordConfirm" class="form-control form-control-lg"/>
+                <label class="form-label" for="passwordConfirm" >Password confirm</label>
+                <span class="bi bi-eye-slash position-absolute end-0 top-50 translate-middle-y" id="togglePasswordConfirm"></span>
+              </div>            
+
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success btn-lg gradient-custom-4 text-body"  
+                id="registerButton" onclick="PasswordsMatch()">Send request</button>
+              </div>
+
+              <div class="modal" tabindex="-1" id="popup">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Error</h5>
+                      <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    <div class="modal-body">
+                      <p th:text="${message}" id="message"></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </form>
+    </div>
+</body>
+</html>

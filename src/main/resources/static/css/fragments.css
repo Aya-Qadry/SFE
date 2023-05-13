@@ -1,0 +1,48 @@
+#side_nave{
+    background: rgb(5, 109, 5);
+    max-width: fit-content ;
+    min-width: 280px ;
+    min-height: 100vh;
+    height: 100%;
+    /* margin-top: 0%;
+    padding-top: 0%; */
+    /* position: static; */
+}
+.content{
+    min-height: fit-content;
+    /* box-sizing: border-box; */
+    width: 100%;
+   
+}
+hr.h-color{
+    background-color: rgb(40, 62, 55);
+}
+.sidebar li.active{
+    background: whitesmoke;
+    border-radius: 7px;
+}
+.sidebar li.active a , .sidebar li.active a:hover{
+    color: rgb(1, 84, 1);
+}
+.sidebar li a {
+    color: white;
+}
+
+@media(max-width : 767px){
+    #side_nave {
+        /* margin-left: -250px; */
+        position: fixed;
+        min-height: 100vh;
+        z-index: 1;
+    }
+    #side_nave.active{
+        margin-left: 0;
+    }
+}
+/* html, body {
+    height: 100%;
+ } */
+ 
+.container{
+    /* margin-left: 280px; */
+}

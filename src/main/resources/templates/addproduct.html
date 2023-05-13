@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" 
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+    crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+    crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+    <script src="/js/fragments.js"></script>
+    <link rel="stylesheet" href="/css/fragments.css">
+
+</head>
+<body>
+    <div th:replace="fragments :: nav" ></div>   
+    
+    <div class="main-container d-flex">
+    <div th:replace="fragments :: menu" ></div>
+
+    <div class="container">
+        <div class="card-body p-2 p-md-4">
+            <h4>Create a new product </h4>
+        </div>
+
+        <form ath:action="@{/adminhome/products/addproduct}" th:object="${product}" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                    <input type="text" id="name" class="form-control form-control-lg" name="name" autofocus/>
+                    <label class="form-label" for="nama">Product's name</label>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                    <input type="text" id="product_code" class="form-control form-control-lg"  name="product_code"/>
+                    <label class="form-label" for="product_code">Product's code</label>
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-13 mb-4">
+                    <div class="form-floating">
+                      <textarea class="form-control" name="description" id="description" style="height: 100px"></textarea>
+                      <label for="description" class="form-label">Description</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                  <!-- <label class="form-label">Gender </label> -->
+                  <select name="category_id" class="form-select">
+                    <option value="">Select a category</option>
+                    <option th:value="1" th:text="Fruits"></option>
+                    <option th:value="5" th:text="Vegetables"></option>
+                 </select>
+              </div>
+              </div>
+            <!-- <div class="form-floating">
+                <label for="image" ></label>
+                <input />
+            </div> -->
+            <div class="mb-3">
+              <label for="formFile" class="form-label">Upload an image of your product </label>
+              <input class="form-control" type="file" name="image" accept="image/png, image/jpeg , image/jpg" >
+            </div>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success btn-lg gradient-custom-4 "  
+                id="createButton"> Add </button>
+              </div>
+        </form>
+
+    </div>
+    </div>
+    
+</body>
+</html>

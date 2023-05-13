@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script src="/js/fragments.js"></script>
+  <link rel="stylesheet" href="/css/fragments.css">
+  <link rel="stylesheet" href="/css/listproducts.css">
+
+</head>
+
+<body>
+  <div th:replace="fragments :: nav"></div>
+
+  <div class="main-container d-flex">
+    <div th:replace="fragments :: menu"></div>
+
+    <div class="container">
+      <!-- <div class="container px-4">
+        <div class="row gx-5" >
+            <div class="col-md-6" th:each="product : ${productslist}" id="col">
+              <div class="span-3 border bg-light" style="margin-top: 15px;">
+                <span><img th:src="${product.photosImagePath}" width="100px" height="100px" /></span>
+                <span th:text="${product.name}" style="font-weight: bold;"></span><br>
+                <label for="product_code">Product code : </label>
+                <span th:text="${product.product_code}" name="product_code"></span><br>
+                <label for="category">Category : </label>
+                <span th:text="${product.category_id.category_id}" name="category"></span>
+                <span th:text="${product.description}" class="description"></span>
+              </div>
+            </div>
+        </div>
+      </div> -->
+      <div class="row gx-5">
+        <div class="col-md-4 mb-3" th:each="product : ${productslist}">
+          <div class="card">
+            <img th:src="${product.photosImagePath}">
+            <div class="card-content">
+              <h2 th:text="${product.name}"></h2>
+              <!-- <span th:text="${product.category_id.category_id}" class="id"></span><br> -->
+              <p class="h6" th:if="${product.category_id.category_id == 1}" hidden>Fruits</p>
+              <p class="h6" th:if="${product.category_id.category_id == 5}" hidden>Vegetables</p>
+              <p th:text="${product.description}" class="description"></p>
+              <a th:href="@{/adminhome/stock/addToStock/{id}(id=${product.product_id})}" class=" btn btn-danger" ><i class="fa fa-plus" ></i> Add to stock</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <form th:action="@{/adminhome/stock/addToStock}" method="post">
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true"> 
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Add product to Stock</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tr>
+                            <th>Category's name</th>
+                                <td>
+                                  <select name="unit_id" class="form-select">
+                                    <option value="">Select a measurement unit</option>
+                                    <option th:each="measurementUnit : ${measurementUnits}" 
+                                            th:value="${measurementUnit.unit_id}" 
+                                            th:text="${measurementUnit.name}"></option>
+                                </select>
+                                </td>
+                            </tr>
+                            <tr>
+                            <th>Price</th>
+                                <td>
+                                  <input type="number" name="price" id="price">
+                                </td>
+                            </tr>
+                            <th>Quantity</th>
+                                <td>
+                                  <input type="number" name="quantity" id="quantity">
+                                </td>
+                                <td name="product_id" value="">
+                                  <input type="number" name="product_id" id="product_id">
+                                </td>
+                        </table>
+                      </div>       
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelButton" >Cancel</button>
+                    <input type="submit" class="btn btn-success " value="Save"/>
+                </div>
+              </div>
+            </div>
+           </div>
+          </div>
+        </form>    -->
+        
+        
+    </div>
+  </div>
+
+  <script>
+    // $(document).ready(function(){
+    //   $(".card #addButton").click(function(e){
+    //     $("#addModal").modal('show');
+    //   });
+    //   $("#closeButton , #cancelButton").on('click',function(){
+    //     $("#addModal").modal('hide');
+    //   });
+    // });
+  </script>
+</body>
+
+</html>

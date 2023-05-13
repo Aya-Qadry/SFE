@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+    crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+    crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+    <script src="/js/fragments.js"></script>
+    <link rel="stylesheet" href="/css/fragments.css">
+    
+    <style>
+      .row{
+        max-height: 82px;
+      }
+      #updateButton{
+        background-color: rgb(70, 144, 70);
+        color: white;
+      }
+      #updateButton:hover{
+        background-color: rgb(5, 109, 5);
+      }
+    </style>
+</head>
+<body>
+
+  <div th:include="fragments :: nav" ></div>  
+
+  <div class="main-container d-flex">
+
+    <div th:include="fragments :: menu" ></div>   
+
+    <div class="container">
+
+      <div class="card-body p-2 p-md-4">
+        <h4>Update vendor's info </h4>
+      </div>
+
+        <form th:action="@{/adminhome/updateVendor/{id}(id=${id})}"  method="post" th:object="${vendor}" id="form">
+            <input th:value="${id}">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                    <input type="text" id="firstname" class="form-control " th:field="*{firstname}" autofocus/>
+                    <label class="form-label" for="firstname">First name</label>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                    <input type="text" id="lastname" class="form-control "  th:field="*{lastname}"/>
+                    <label class="form-label" for="lastname">Last name</label>
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <div class="form-floating">
+                <input type="text" id="cin" class="form-control "  th:field="*{cin}"/>
+                <label class="form-label" for="cin">CIN</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="form-floating mb-4">
+                  <input type="text" id="phonenumber" class="form-control" th:field="*{phonenumber}"/>
+                  <label class="form-label" for="phonenumber">Phone number</label>
+                </div>
+              </div>
+            </div>
+                
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <!-- <label class="form-label">Gender </label> -->
+                <select th:field="*{gender}" class="form-select">
+                  <option value="">Select a gender</option>
+                  <option th:value="'Male'" th:text="Male"></option>
+                  <option th:value="'Female'" th:text="Female"></option>
+                </select>
+            </div>
+            </div>
+            <!-- <div th:object="${deliveryAddress}">
+              <div class="row" >
+                <div class="col-md-6 mb-4">
+                  <label class="form-label" for="city">City </label>
+                  <select  id="city-select" name="city" class="form-select">
+                      <option value="">Select a city</option>
+                  </select>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                  <input type="text" id="zipcode" class="form-control form-control-lg"  th:field="*{zipcode}"/>
+                  <label class="form-label" for="zipcode">Zip code</label>
+                  </div>
+                </div>
+              </div>
+            <div class="row">
+              <div class="col-md-13 mb-4">
+                <div class="form-floating mb-4">
+                  <input type="text" id="address" class="form-control form-control-lg" th:field="*{addressline}"/>
+                  <label class="form-label" for="address">Delivery address</label>
+                </div>
+              </div>
+            </div>
+          </div> -->
+            <div class="row">
+              <div class="col-md-13 mb-3">
+                <div class="form-floating mb-4">
+                  <input type="text" id="emailaddress" class="form-control " th:field="*{emailaddress}"/>
+                  <label class="form-label" for="emailaddress">Email address</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-success btn-lg gradient-custom-4 text-body"  
+                id="updateButton">Save vendor</button>
+            </div>
+            
+        </form>
+    </div>
+  </div>
+  <script src="/js/fragments.js"></script>
+
+    <script>
+      const citySelect = document.getElementById("city-select");
+    const url = "http://api.geonames.org/searchJSON?q=*&country=MA&maxRows=1000&username=lamar";
+
+    // Fetch the data from the GeoNames API
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            // Loop through the data and add options to the select element
+            data.geonames.forEach(city => {
+                const option = document.createElement("option");
+                option.value = city.name;
+                option.textContent = city.name;
+                citySelect.appendChild(option);
+            });
+        })
+        .catch(error => console.error(error));
+    </script>
+</body>
+</html>
