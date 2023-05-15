@@ -7,10 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-// @EnableJpaRepositories
 public class SfeApplication {
-
-	
 	public static void main(String[] args) {
 		SpringApplication.run(SfeApplication.class, args);
 		System.out.println("version: " + SpringVersion.getVersion());

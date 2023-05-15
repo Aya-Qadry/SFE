@@ -11,9 +11,19 @@ public class Stock {
     @Column(name="stock_id")
     private int stock_id ; 
 
+    @Column(name = "product_id")
+    private int product_id;
+
+    public int getProduct_id() {
+        return product_id;
+    }
+
+    public void setProduct_id(int product_id) {
+        this.product_id = product_id;
+    }
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id" , referencedColumnName = "product_id", nullable = false )
-    private Product product_id ;
+    @JoinColumn(name = "product_id", referencedColumnName = "product_id", insertable = false, updatable = false)
+    private Product product ;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unit_id" , referencedColumnName = "unit_id", nullable = false )
@@ -32,11 +42,11 @@ public class Stock {
     public void setStock_id(int stock_id) {
         this.stock_id = stock_id;
     }
-    public Product getProduct_id() {
-        return product_id;
+    public Product getProduct() {
+        return product;
     }
-    public void setProduct_id(Product product_id) {
-        this.product_id = product_id;
+    public void setProduct(Product product) {
+        this.product = product;
     }
     public MesurementUnit getUnit_id() {
         return unit_id;

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+    crossorigin="anonymous"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+  <script src="/js/fragments.js"></script>
+  <link rel="stylesheet" href="/css/liststock.css">
+  <link rel="stylesheet" href="/css/fragments.css">
+</head>
+
+<body>
+
+  <div th:replace="fragments :: nav"></div>
+  <div class="main-container d-flex">
+    <div th:replace="fragments :: menu"></div>
+    <div class="container">
+      <h5>Products in stock</h5>
+
+      <div class="row gx-3">
+        <div class="col-md-3 mb-3" th:each="stock : ${liststock}">
+          <!-- <div class="card"> -->
+          <div class="card product-card" id="${stock.product_id}">
+            <p hidden th:value="${stock.stock_id}" name="stock_id" id="stock_id"></p>
+            <img th:src="${stock.product.photosImagePath}">
+            <div class="card-content">
+              <h2 th:text="${stock.product.name}" id="product_name"></h2>
+              <p hidden th:text="${stock.product_id}" id="product_id"></p>
+              <p hidden th:text="${stock.stock_id}" id="stock_id"></p>
+              <a class=" btn btn-danger" id="infoButton" ><i class="fa fa-info"></i> Show stock </a>
+              <p type="text" th:text="${stock.unit_id.name}" hidden id="unitname"></p>
+              <p type="text" th:text="${stock.price}" hidden id="price"></p>
+              <p type="text" th:text="${stock.quantity}" hidden id="quantity"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Info Modal -->
+      <div class="modal fade" id="infoModalCenter" tabindex="-1" role="dialog" aria-labelledby="infoModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Stock's details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeBtn">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <tbody class="tbody">
+                    <tr>
+                      <th>Product</th>
+                      <td><input type="text" class="form-control" id="name" name="name" readonly value=""></td>
+                    </tr>
+                    <tr class="tr_clone">
+                      <th>Mesurement Unit</th>
+                      <td><input type="text" class="form-control" id="unit" name="unit" readonly value=""></td>
+                      <th>Price</th>
+                      <td><input type="text" class="form-control" id="price" name="price" readonly value=""></td>
+                      <th>Quantity</th>
+                      <td><input type="text" class="form-control" id="quantity" name="quantity" readonly value=""></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- <div class="modal-footer" id="modal-footer">
+              <p hidden id="stock_id" name="stock_id" value=""></p>
+                <a th:href="@{/adminhome/stock/getID}" id="deleteButton" class="btn btn-danger" >Delete this product from stock </a>
+            </div> -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script th:inline="javascript">
+
+    var uniqueProducts = {};
+
+    $('.card').each(function () {
+      // var productId = $(this).find('#product_id').text();
+      var productId = $(this).closest('.card').find('#product_id').text();
+      console.log(productId);
+      // var productId = $(this).closest('.card').find('#product_id').text();
+
+      if (!uniqueProducts[productId]) {
+        uniqueProducts[productId] = {
+          name: $(this).find('#product_name').text(),
+          photosImagePath: $(this).find('img').attr('src'),
+          unitNames: [],
+          prices: [],
+          quantities: []
+        };
+      }
+
+      uniqueProducts[productId].unitNames.push($(this).find('#unitname').text());
+      uniqueProducts[productId].prices.push($(this).find('#price').text());
+      uniqueProducts[productId].quantities.push($(this).find('#quantity').text());
+      console.log(uniqueProducts[productId]);
+
+      // if (jQuery.inArray(productId, uniqueProducts)) {
+      //   // $('data-product-id=' + productId + '"').hide();
+      //   $(this).hide();
+      //   console.log("Hide duplicate product with ID: " + productId);
+      // }
+
+      $.each(uniqueProducts, function (key, value) {
+        var productCards = $('.card').parent().filter(function () {
+          return $(this).find('#product_id').text() == key;
+        });
+
+        if (productCards.length > 1) {
+          productCards.not(':first').hide();
+          console.log("Hide duplicate product with ID: " + key);
+        }
+      });
+
+    });
+    // });
+
+
+
+    // $(document).ready(function () {
+    //   var productId = null;
+    //   $('.card #infoButton').click(function (e) {
+    //     e.preventDefault();
+    //     productId = $(this).closest('.card-content').find('#stock_id').text();
+    //     var productData = uniqueProducts[productId];
+
+    //     $('.table #name').val(productData.name);
+    //     $(".table #unit").val(productData.unitNames[0]);
+    //     $(".table #price").val(productData.prices[0]);
+    //     $(".table #quantity").val(productData.quantities[0]);
+
+    //     // create a new row with the product data
+    //     var $rowClone = $('.table .tr_clone').first().append().clone();
+
+    //     if (uniqueProducts[productId].unitNames.length >= 2) {
+    //       console.log("entered if");
+    //       $rowClone.find('#unit').val(productData.unitNames[1]);
+    //       $rowClone.find('#price').val(productData.prices[1]);
+    //       $rowClone.find('#quantity').val(productData.quantities[1]);
+    //       $(' .table .tbody').append($rowClone);
+    //     } else {
+    //       console.log("entered else");
+    //       $rowClone.find('#unit').val("");
+    //       $rowClone.find('#price').val("");
+    //       $rowClone.find('#quantity').val("");
+    //     }
+
+    //     $('#infoModalCenter').modal('show');
+
+    //   });
+    //   $('#closeBtn').click(function () {
+    //     $('#infoModalCenter').modal('hide');
+    //   });
+    // });
+
+    $(document).ready(function () {
+      $('.card #infoButton').click(function (e) {
+        e.preventDefault();
+        var productId = $(this).closest('.card').find('#product_id').text();
+        var productData = uniqueProducts[productId];
+        var stock_id = $(this).closest('.card').find('#stock_id').text();
+        console.log(stock_id);
+        $('#stock_id').val(stock_id);
+        $('.table #name').val(productData.name);
+        $(".table #unit").val(productData.unitNames.join(', '));
+        $(".table #price").val(productData.prices.join(', '));
+        $(".table #quantity").val(productData.quantities.join(', '));
+        $('#infoModalCenter').modal('show');
+        
+        $('#closeBtn').click(function () {
+        $('#infoModalCenter').modal('hide');
+      });
+    });
+      
+    });
+
+
+
+  </script>
+
+</body>
+
+</html>

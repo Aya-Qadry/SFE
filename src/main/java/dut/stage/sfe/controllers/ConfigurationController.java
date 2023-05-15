@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import dut.stage.sfe.dao.UnitRepository;
 import dut.stage.sfe.model.MesurementUnit;
+import dut.stage.sfe.services.ShippingOptionServiceImpl;
 import dut.stage.sfe.services.UnitServicesImpl;
 
 @Controller
@@ -20,6 +21,9 @@ public class ConfigurationController {
     @Autowired
     UnitServicesImpl unitServicesImpl ; 
 
+    @Autowired
+    ShippingOptionServiceImpl shippingService ; 
+    
     @Autowired
     UnitRepository repository ; 
 
@@ -45,6 +49,12 @@ public class ConfigurationController {
     public String editUnit(MesurementUnit mesurementUnit){
         repository.save(mesurementUnit);
         return "redirect:/adminhome/configuration/listunits";
+    }
+
+    @GetMapping("/listoptions")
+    public String listOptions(Model model){
+        model.addAttribute("listoptions", shippingService.findAllOptions());
+        return "listoptions";
     }
 
 }

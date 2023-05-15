@@ -18,46 +18,90 @@
 
     <script src="/js/fragments.js"></script>
     <link rel="stylesheet" href="/css/fragments.css">
-</head>
-<body>
-    <div th:replace="fragments :: nav" ></div>   
-    
-    <div class="main-container d-flex">
-    <div th:replace="fragments :: menu" ></div>
+    <style>
 
-    <div class="container">
-        <form th:action="@{/adminhome/stock/addToStock}" method="post" >
-            <table class="table table-bordered">
-                <tr>
-                <th>Category's name</th>
-                    <td>
-                      <select name="unit_id" class="form-select">
-                        <option value="">Select a measurement unit</option>
-                        <option th:each="measurementUnit : ${measurementUnits}" 
-                                th:value="${measurementUnit.unit_id}" 
-                                th:text="${measurementUnit.name}"></option>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                <th>Price</th>
-                    <td>
-                      <input type="number" name="price" id="price">
-                    </td>
-                </tr>
-                <tr>
-                    <th>Quantity</th>
-                    <td>
-                      <input type="number" name="quantity" id="quantity">
-                </tr>
-               
-                    </td>
-                    <td name="product_id" th:value="${product_id}"></td>
-            </table>
-            <button type="submit" class="btn btn-success">Add</button>
-        
-        </form>
+    </style>
+</head>
+
+<body>
+    <div th:replace="fragments :: nav"></div>
+
+    <div class="main-container d-flex">
+        <div th:replace="fragments :: menu"></div>
+
+        <div class="container">
+            <table class="table table-bordered" id="table">
+
+            <form th:action="@{/adminhome/stock/addToStock}" method="post" id="container" th:object="${stock}">
+                    <tr>
+                        <th>Category's name</th>
+                        <td>
+                            <select name="unit_id" class="form-select" >
+                                <option value="stock.unit_id.name" th:text="${stock.}">Select a measurement unit</option>
+                                <option th:each="measurementUnit : ${measurementUnits}"
+                                        th:value="${measurementUnit.unit_id}" th:text="${measurementUnit.name}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Price</th>
+                        <td>
+                            <input type="number" name="price" id="price" th:field="*{price}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Quantity</th>
+                        <td>
+                            <input type="number" name="quantity" id="quantity" th:field="*{quantity}">
+                        </td>
+                    </tr>
+                    <tr class="clone" id="clone">
+                        <td id="minus">
+                            <button type="button" onclick="remove(this)" id="minusbtn"><i
+                                    class="fa fa-minus"></i></button>
+                        </td>
+                    </tr>
+                    <tr hidden>
+                        <input type="text" name="product_id" th:value="${product_id}" hidden>
+                        <input type="text" th:text="${product_id}" hidden>
+                    </tr>
+                    <button style="margin-right: 10px;" type="button" onclick="add()"><i class="fa fa-plus"></i></button>
+
+                    <br><button type="submit" class="btn btn-success">Add</button>
+
+
+
+            </form>
+        </table>
+
+        </div>
     </div>
-    </div>
+
+    <script>
+
+        var container = document.getElementById('container');
+        document.querySelector('#table .clone').style.display = 'none';
+
+        function add() {
+            var table = document.getElementById('table');
+            // container.appendChild(table.cloneNode(true));
+
+            var clonedRow = table.lastElementChild.cloneNode(true);
+            clonedRow.querySelectorAll('input[type="number"]').forEach(input => input.value = ''); // Clear input values
+            clonedRow.querySelectorAll('input[type="text"]').forEach(input => input.value = ''); // Clear input values
+            clonedRow.querySelectorAll('option').forEach(input => input.value = ''); // Clear input values
+
+            table.appendChild(clonedRow);
+
+            // show the remove button in the cloned row only
+            clonedRow.querySelector('.clone').style.display = 'inline';
+        }
+        function remove(button) {
+            var table = button.parentNode.parentNode.parentNode;
+            table.parentNode.removeChild(table);
+        }
+
+    </script>
 </body>
+
 </html>

@@ -21,8 +21,8 @@ main {
 }
 
 .card {
-    width: 24rem;
-    height: 25rem;
+    width: 20rem;
+    height: 15rem;
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
@@ -78,7 +78,7 @@ main {
 }
 
 .card:hover h2 {
-    inset: auto auto 220px 30px;
+    inset: auto auto 100px 30px;
     margin-bottom: 20px;
     transition: inset 0.3s ease-out;
 }
