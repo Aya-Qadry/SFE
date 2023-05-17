@@ -23,7 +23,7 @@
     </style>
 </head>
 
-<body>
+<body> 
     <div th:replace="fragments :: nav"></div>
 
     <div class="main-container d-flex">
@@ -32,12 +32,12 @@
         <div class="container">
             <table class="table table-bordered" id="table">
 
-            <form th:action="@{/adminhome/stock/addToStock}" method="post" id="container" th:object="${stock}">
+            <form th:action="@{/adminhome/stock/addToStock}" method="post" id="container" >
                     <tr>
                         <th>Category's name</th>
                         <td>
                             <select name="unit_id" class="form-select" >
-                                <option value="stock.unit_id.name" th:text="${stock.}">Select a measurement unit</option>
+                                <option value="" >Select a measurement unit</option>
                                 <option th:each="measurementUnit : ${measurementUnits}"
                                         th:value="${measurementUnit.unit_id}" th:text="${measurementUnit.name}"></option>
                             </select>
@@ -46,13 +46,13 @@
                     <tr>
                         <th>Price</th>
                         <td>
-                            <input type="number" name="price" id="price" th:field="*{price}">
+                            <input type="number" name="price" id="price"  >
                         </td>
                     </tr>
                     <tr>
                         <th>Quantity</th>
                         <td>
-                            <input type="number" name="quantity" id="quantity" th:field="*{quantity}">
+                            <input type="number" name="quantity" id="quantity" >
                         </td>
                     </tr>
                     <tr class="clone" id="clone">

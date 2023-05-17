@@ -39,7 +39,7 @@ public class MyUserDetails implements UserDetails {
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
         }else if(roleId == 2 ){
             authorities.add(new SimpleGrantedAuthority("VENDOR"));
-        }else{
+        }else if(roleId == 3)  {
             authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
         }
         System.out.println("----------------------"+authorities);
@@ -66,7 +66,7 @@ public class MyUserDetails implements UserDetails {
         return true ; 
     }
 
-    @Override
+    @Override 
     public boolean isCredentialsNonExpired() {
         return true ; 
     }

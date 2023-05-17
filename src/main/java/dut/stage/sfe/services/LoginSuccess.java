@@ -33,7 +33,7 @@ public class LoginSuccess extends SavedRequestAwareAuthenticationSuccessHandler 
         }else if(userDetails.getAuthorities().toString().contains("VENDOR")){
             redirecturl = "/vendorhome";
             System.out.println("vendor");
-        }else{
+        }else if(userDetails.getAuthorities().toString().contains("CUSTOMER")){
             redirecturl = "/customer";
         }
         System.out.println("+++++++++++++++++3222"+userDetails.getAuthorities());

@@ -3,6 +3,8 @@ package dut.stage.sfe.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -23,8 +25,10 @@ public class Customers {
 
     @Id
     @Column(name = "customer_id")
-    private String customer_id ; 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int customer_id ; 
     
+ 
     private String firstname ; 
     private String lastname ; 
     private String emailaddress ;
@@ -45,12 +49,7 @@ public class Customers {
     public void setVendor_id(Vendor vendor_id) {
         this.vendor_id = vendor_id;
     }
-    public String getCustomer_id() {
-        return customer_id;
-    }
-    public void setCustomer_id(String customer_id) {
-        this.customer_id = customer_id;
-    }
+    
     public String getFirstname() {
         return firstname;
     }
@@ -93,6 +92,11 @@ public class Customers {
     public void setGender(String gender) {
         this.gender = gender;
     } 
-
+    public int getCustomer_id() {
+        return customer_id;
+    }
+    public void setCustomer_id(int customer_id) {
+        this.customer_id = customer_id;
+    }
 
 }

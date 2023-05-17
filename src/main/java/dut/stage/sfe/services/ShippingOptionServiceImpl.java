@@ -23,5 +23,16 @@ public class ShippingOptionServiceImpl implements ShippingOptionService{
     public List<ShippingOptions> findAllOptions() {
         return repository.findAll();
     }
+
+    @Override
+    public void deleteById(int id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public ShippingOptions findById(int id) {
+        ShippingOptions s = repository.findById(id).orElse(null);
+        return s; 
+    }
     
 }

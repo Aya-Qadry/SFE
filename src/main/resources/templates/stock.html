@@ -37,7 +37,7 @@
             <img th:src="${stock.product.photosImagePath}">
             <div class="card-content">
               <h2 th:text="${stock.product.name}" id="product_name"></h2>
-              <p hidden th:text="${stock.product_id}" id="product_id"></p>
+              <p hidden th:text="${stock?.product_id}" id="product_id"></p>
               <p hidden th:text="${stock.stock_id}" id="stock_id"></p>
               <a class=" btn btn-danger" id="infoButton" ><i class="fa fa-info"></i> Show stock </a>
               <p type="text" th:text="${stock.unit_id.name}" hidden id="unitname"></p>

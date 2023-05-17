@@ -76,7 +76,7 @@
           </ul>
         </li>
 
-        <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-boxes"></i> Orders</a>
+        <li class=""><a th:href="@{/adminhome/orders/listorders}" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-boxes"></i> Orders</a>
         </li>
 
         <li class=""><a th:href="@{/adminhome/requests}" class="text-decoration-none px-3 py-2 d-block"><i
@@ -84,8 +84,7 @@
 
         <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-users"></i> Users</a>
           <ul class="sub-menu" style="list-style: none ;">
-            <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-list-ul"></i> Show list of
-                users</a></li>
+            <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-list-ul"></i> Show list of users</a></li>
             <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-plus"></i> Add a user</a>
             </li>
           </ul>
@@ -93,15 +92,13 @@
 
         <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-cogs"></i> Configuration</a>
           <ul class="sub-menu" style="list-style: none;">
-            <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-truck"></i> Shipping
-                options</a></li>
+            <li><a th:href="@{/adminhome/configuration/listoptions}" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-truck"></i> Shipping options</a></li>
             <li><a th:href="@{/adminhome/configuration/listunits}" class="text-decoration-none px-3 py-2 d-block"><i
                   class="far fa-weight-hanging"></i> Mesurement units</a></li>
           </ul>
         </li>
 
-        <li><a th:href="@{/adminhome/stock/showstock}" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-inventory"></i> Stock
-            management</a></li>
+        <li><a th:href="@{/adminhome/stock/showstock}" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-inventory"></i> Stock management</a></li>
 
       </ul>
 

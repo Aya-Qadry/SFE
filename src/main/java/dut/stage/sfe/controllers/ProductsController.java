@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import dut.stage.sfe.dao.CategoryRepository;
 import dut.stage.sfe.model.Category;
 import dut.stage.sfe.model.Product;

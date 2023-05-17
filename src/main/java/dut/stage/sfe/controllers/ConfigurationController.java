@@ -1,5 +1,7 @@
 package dut.stage.sfe.controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import dut.stage.sfe.dao.UnitRepository;
 import dut.stage.sfe.model.MesurementUnit;
+import dut.stage.sfe.model.ShippingOptions;
+import dut.stage.sfe.model.ShippingOptions;
 import dut.stage.sfe.services.ShippingOptionServiceImpl;
 import dut.stage.sfe.services.UnitServicesImpl;
 
@@ -57,4 +61,21 @@ public class ConfigurationController {
         return "listoptions";
     }
 
+    @PostMapping("/addoption")
+    public String addOption(ShippingOptions shippingOptions ){
+        shippingService.add(shippingOptions);
+        return "redirect:/adminhome/configuration/listoptions" ; 
+    }
+
+    @GetMapping("/deleteOption/{id}")
+    public String deleteOption(@PathVariable("id") int id){
+        shippingService.deleteById(id);
+        return "redirect:/adminhome/configuration/listoptions";
+    }
+
+    @GetMapping("/showOption/{id}")
+    @ResponseBody
+    public ShippingOptions showCategory(@PathVariable("id") int id) {
+        return shippingService.findById(id) ;
+    } 
 }

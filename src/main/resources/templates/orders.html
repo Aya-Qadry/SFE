@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta order_id="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+    <script src="/js/fragments.js"></script>
+    <link rel="stylesheet" href="/css/fragments.css">
+
+</head>
+
+<body>
+    <div th:replace="fragments :: nav"></div>
+
+    <div class="main-container d-flex">
+        <div th:replace="fragments :: menu"></div>
+        <div class="container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Order</th>
+                        <th>Customer</th>
+                        <th>Shipping option</th>
+                        <th>Created at</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orderlist}">
+                        <td th:text="${order.order_id}" id="order_id"></td>
+                        <!-- <td th:text="${order.customer_id.firstorder_id+' '+order.customer_id.lastorder_id}" id="fullorder_id"></td> -->
+                        <td th:text="${order.shipping_id.name}"></td>
+                        <td th:text="${order.date}" id="date"></td>
+                        <td>
+                            <a th:href="@{/adminhome/orders/deleteOrder/{id}(id=${order.order_id})}" id="deleteButton"
+                                class="btn" style="padding: 0;">
+                                <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
+
+                            <a th:href="@{/adminhome/orders/showOrder/{id}(id=${order.order_id})}" class="btn"
+                                id="infoButton" style="padding: 0;">
+                                <i class="far fa-info-circle" style="color: #398fac;"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Delete modal -->
+            <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="removeModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="removeModalCenterTitle">Delete alert</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeButton">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="alert alert-danger">
+                                Are You sure You want to delete this order?
+                            </p>
+                            <p id="order_id"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="cancelButton">Cancel</button>
+                            <a href="" class="btn btn-danger" id="delRef">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info modal -->
+            <div class="modal fade" id="infoModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="infoModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Order's details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeBtn">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="modal-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>Order Id</th>
+                                            <td><input type="text" class="form-control" id="order_id" order_id="order_id"
+                                                    readonly value=""></td>
+                                            <!-- <th>Customer</th>
+                                            <td><input type="text" class="form-control" id="customer" order_id="customer"
+                                                    readonly value=""></td> -->
+                                        </tr>
+                                        <tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $('.table #deleteButton').on('click', function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                $('#removeModalCenter #delRef').attr('href', href);
+                $.get(href, function (order, status) {
+                    $('#removeModalCenter #order_id').val(order.order_id);
+                });
+                $('#removeModalCenter').modal('show');
+                $('#cancelButton , #closeButton').on('click', function () {
+                    $('#removeModalCenter').modal('hide');
+                });
+            });
+
+             //info button
+             $('.table #infoButton').click(function (e) {
+                e.preventDefault();
+                var href = '';
+                href = $(this).attr('href');
+                // $("#infoButton").attr('href',href);
+                $.get(href, function (order, status) {
+                    $('#infoModalCenter #order_id').val(order.order_id);
+                });
+                $('#infoModalCenter').modal('show');
+                $('#closeBtn').click(function () {
+                    $('#infoModalCenter').modal('hide');
+                });
+            });
+
+        });
+    </script>
+</body>
+
+</html>
