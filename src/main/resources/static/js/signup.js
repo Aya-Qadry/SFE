@@ -23,6 +23,7 @@
       });
     });
 
+    console.log("hello")
       var popup = document.getElementById('popup');
       function PasswordsMatch(){
         var message = document.getElementById('message').textContent;

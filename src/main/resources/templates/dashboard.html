@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <script src="/js/fragments.js"></script>
+    <link rel="stylesheet" href="/css/fragments.css">
+
+    <!-- <script src="https://unpkg.com/@popperjs/core@2"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
+    <style>
+        #bounce {
+            background-color: #006249;
+            color: white;
+        }
+
+        .row {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:replace="fragments :: nav"></div>
+
+    <div class="main-container d-flex">
+
+        <div class="preloader flex-column justify-content-center align-items-center" style="background-color: white;">
+            <img class="animation" src="/images/Horizonal-A-Logo.jpg" alt="AvonFruitsLogo" height="30%" width="50%">
+        </div>
+
+        <div th:replace="fragments :: menu"></div>
+
+        <!-- <div class="content-wrapper"> -->
+        <div class="content-header"></div>
+        <!-- <section class="content"> -->
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-info">
+                        <div class="inner">
+                            <h3 th:text="${totalorders}"></h3>
+                            <ul>Orders</ul>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <a th:href="@{/adminhome/orders/listorders}" class="small-box-footer">More info <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box " id="bounce">
+                        <div class="inner">
+                            <!-- <h3><sup style="font-size: 20px">%</sup></h3> -->
+                            <h3 th:text="${totalproducts}"></h3>
+                            <ul>Products</ul>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a th:href="@{/adminhome/products/listproducts}" class="small-box-footer">More info <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-warning">
+                        <div class="inner">
+                            <h3 th:text="${totalrequests}"></h3>
+                            <ul>Requests</ul>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                        <a th:href="@{/adminhome/requests}" class="small-box-footer">More info <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-danger">
+                        <div class="inner">
+                            <h3 th:text="${totalusers}"></h3>
+                            <ul>Users</ul>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                        <a th:href="@{/adminhome/users/listusers}" class="small-box-footer">More info <i
+                                class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6" style="padding-left: 0%;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Users</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px">#</th>
+                                    <th>Full name</th>
+                                    <th>Creation date</th>
+                                    <th style="width: 40px">Role</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="user : ${listusers}">
+                                    <td th:text="${user.user_id}"></td>
+                                    <td th:text="${user.firstname+' '+user.lastname}"></td>
+                                    <td th:text="${{user.date}}"></td>
+                                    <td th:text="${user.roles}"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div class="card-footer ">
+                        <ul class="pagination pagination-sm m-0 float-right">
+                            Total Items [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
+                            &nbsp; &nbsp 
+                        </ul>
+                        <ul class="pagination pagination-sm m-0 float-left" th:each="i: ${#numbers.sequence(1, totalPages)}">
+                            
+                            <!-- <li class="page-item"><a class="page-link" href="#">«</a></li> -->
+                            <li class="page-item"><a class="page-link"
+                                    th:href="@{'/adminhome/user/dashboard/' + ${i}}">[[${i}]]</a></li>
+                            <!-- <li class="page-item"><a class="page-link" href="#">»</a></li> -->
+                            &nbsp; &nbsp;
+
+                        </ul>
+                    </div> 
+                    <!-- End pagination -->
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- </section> -->
+        <!-- </div> -->
+    </div>
+
+</body>
+
+</html>

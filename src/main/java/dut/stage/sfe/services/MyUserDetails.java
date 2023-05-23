@@ -7,7 +7,8 @@ import java.util.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import dut.stage.sfe.model.Roles;
+
+import dut.stage.sfe.model.Role;
 import dut.stage.sfe.model.User;
 
 // @Component
@@ -23,27 +24,38 @@ public class MyUserDetails implements UserDetails {
         this.user = user;
     }
 
-    private Roles role; 
     public MyUserDetails(User user) {
         System.out.println("Calling userDetailsService() method");
         this.user=user;
     }
 
+    // @Override
+    // public Collection<? extends GrantedAuthority> getAuthorities() {
+    //     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();        
+    //     // int roleId = ((MyUserDetails) authentication.getPrincipal()).user.getRole().getId();
+    //     // authorities.add(new SimpleGrantedAuthority(role.getName()));
+    //     int roleId = user.getRole().getId()  ;
+    //     if(roleId == 1 ){
+    //         authorities.add(new SimpleGrantedAuthority("ADMIN"));
+    //     }else if(roleId == 2 ){
+    //         authorities.add(new SimpleGrantedAuthority("VENDOR"));
+    //     }else if(roleId == 3)  {
+    //         authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
+    //     }
+    //     System.out.println("----------------------"+authorities);
+    //     return authorities ; 
+    // }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();        
-        // int roleId = ((MyUserDetails) authentication.getPrincipal()).user.getRole().getId();
-        // authorities.add(new SimpleGrantedAuthority(role.getName()));
-        int roleId = user.getRole().getId()  ;
-        if(roleId == 1 ){
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
-        }else if(roleId == 2 ){
-            authorities.add(new SimpleGrantedAuthority("VENDOR"));
-        }else if(roleId == 3)  {
-            authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
+        Set<Role> roles = user.getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+         
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-        System.out.println("----------------------"+authorities);
-        return authorities ; 
+         
+        return authorities;
     }
 
     @Override

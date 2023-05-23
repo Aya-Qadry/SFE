@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dut.stage.sfe.dao.RequestRepository;
-import dut.stage.sfe.dao.VendorRepository;
 import dut.stage.sfe.model.Request;
 
 @Service
@@ -14,9 +13,6 @@ public class RequestServicesImpl implements RequestServices{
 
     @Autowired
     RequestRepository repository ; 
-
-    @Autowired
-    VendorRepository vendorRepository ; 
 
     @Override
     public Request findByEmailaddress(String emailaddress) {
@@ -46,6 +42,11 @@ public class RequestServicesImpl implements RequestServices{
     @Override
     public void deleteById(int id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Long getTotalRequests() {
+        return repository.count();
     }
 
     

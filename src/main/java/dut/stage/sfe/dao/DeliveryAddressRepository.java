@@ -16,4 +16,7 @@ public interface DeliveryAddressRepository extends JpaRepository<DeliveryAddress
     // Optional<DeliveryAddress> findById(String id);
     // @Query("SELECT a FROM DeliveryAddress a WHERE a.user_id.id = :userId")
     // DeliveryAddress findByUser_id(@Param("userId") int userId);
+    DeliveryAddress findByUserid(int id);
+    DeliveryAddress findByUser(User user);
+    void deleteByUserid(int id);
 }

@@ -1,5 +1,11 @@
 package dut.stage.sfe.model;
 
+import java.io.Serializable;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,15 +19,16 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "customers")
-public class Customers {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Customers{
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id" , referencedColumnName = "user_id", nullable = false )
     private User user_id ; 
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendor_id" , referencedColumnName = "vendor_id", nullable = false )
-    private Vendor vendor_id ; 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vendor_id" , referencedColumnName = "user_id" , nullable = false)
+    private User vendor_id ; 
 
     @Id
     @Column(name = "customer_id")
@@ -37,19 +44,27 @@ public class Customers {
     private String cin ; 
     private String gender ;
     
+    public Customers() {
+    }
+
+
+    public Customers(User user) {
+        this.firstname = user.getFirstname();
+        this.lastname = user.getLastname();
+        this.password = user.getPassword();
+        this.emailaddress = user.getEmailaddress();
+        this.phonenumber = user.getPhonenumber();
+        this.cin = user.getCin();
+        this.gender = user.getGender();
+    }
+   
+
     public User getUser_id() {
         return user_id;
     }
     public void setUser_id(User user_id) {
         this.user_id = user_id;
     }
-    public Vendor getVendor_id() {
-        return vendor_id;
-    }
-    public void setVendor_id(Vendor vendor_id) {
-        this.vendor_id = vendor_id;
-    }
-    
     public String getFirstname() {
         return firstname;
     }
@@ -78,7 +93,8 @@ public class Customers {
         return password;
     }
     public void setPassword(String password) {
-        this.password = password;
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
     }
     public String getCin() {
         return cin;
@@ -97,6 +113,12 @@ public class Customers {
     }
     public void setCustomer_id(int customer_id) {
         this.customer_id = customer_id;
+    }
+    public User getVendor_id() {
+        return vendor_id;
+    }
+    public void setVendor_id(User vendor_id) {
+        this.vendor_id = vendor_id;
     }
 
 }

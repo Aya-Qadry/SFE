@@ -4,9 +4,12 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*; 
 @Entity
 @Table(name = "shipping")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class ShippingOptions {
 
     @Id

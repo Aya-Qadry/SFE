@@ -44,17 +44,17 @@
             <h4>Create a new Vendor </h4>
         </div>
 
-        <form th:action="@{/adminhome/add}" action="#" method="post" th:object="${vendor}" id="form">
+        <form th:action="@{/adminhome/add}" method="post" id="form" th:object="${vendor}">
             <div class="row">
                 <div class="col-md-6 mb-4">
                   <div class="form-floating">
-                    <input type="text" id="firstname" class="form-control form-control-lg" th:field="*{firstname}" autofocus/>
+                    <input type="text" id="firstname" class="form-control form-control-lg" name="firstname" autofocus/>
                     <label class="form-label" for="firstname">First name</label>
                   </div>
                 </div>
                 <div class="col-md-6 mb-4">
                   <div class="form-floating">
-                    <input type="text" id="lastname" class="form-control form-control-lg"  th:field="*{lastname}"/>
+                    <input type="text" id="lastname" class="form-control form-control-lg"  name="lastname"/>
                     <label class="form-label" for="lastname">Last name</label>
                   </div>
                 </div>
@@ -62,13 +62,13 @@
             <div class="row">
               <div class="col-md-6 mb-4">
                 <div class="form-floating">
-                <input type="text" id="cin" class="form-control form-control-lg"  th:field="*{cin}"/>
+                <input type="text" id="cin" class="form-control form-control-lg"  name="cin"/>
                 <label class="form-label" for="cin">CIN</label>
                 </div>
               </div>
               <div class="col-md-6 mb-4">
                 <div class="form-floating mb-4">
-                  <input type="text" id="phonenumber" class="form-control form-control-lg" th:field="*{phonenumber}"/>
+                  <input type="text" id="phonenumber" class="form-control form-control-lg" name="phonenumber"/>
                   <label class="form-label" for="phonenumber">Phone number</label>
                 </div>
               </div>
@@ -77,7 +77,7 @@
             <div class="row">
               <div class="col-md-6 mb-4">
                 <!-- <label class="form-label">Gender </label> -->
-                <select th:field="*{gender}" class="form-select">
+                <select name="gender" class="form-select">
                   <option value="">Select a gender</option>
                   <option th:value="'Male'" th:text="Male"></option>
                   <option th:value="'Female'" th:text="Female"></option>
@@ -87,14 +87,14 @@
             <div th:object="${deliveryAddress}">
               <div class="row" >
                 <div class="col-md-6 mb-4">
-                  <!-- <label class="form-label" for="city">City </label> -->
+                  <label class="form-label" for="city">City </label>
                   <select  id="city-select" name="city" class="form-select">
                       <option value="">Select a city</option>
                   </select>
                 </div>
                 <div class="col-md-6 mb-4">
                   <div class="form-floating">
-                  <input type="text" id="zipcode" class="form-control form-control-lg"  th:field="*{zipcode}"/>
+                  <input type="text" id="zipcode" class="form-control form-control-lg"  name="zipcode"/>
                   <label class="form-label" for="zipcode">Zip code</label>
                   </div>
                 </div>
@@ -102,7 +102,7 @@
             <div class="row">
               <div class="col-md-13 mb-4">
                 <div class="form-floating mb-4">
-                  <input type="text" id="address" class="form-control form-control-lg" th:field="*{addressline}"/>
+                  <input type="text" id="address" class="form-control form-control-lg" name="addressline"/>
                   <label class="form-label" for="address">Delivery address</label>
                 </div>
               </div>
@@ -112,18 +112,16 @@
             <div class="row">
               <div class="col-md-13 mb-4">
                 <div class="form-floating mb-4">
-                  <input type="text" id="emailaddress" class="form-control form-control-lg" th:field="*{emailaddress}"/>
+                  <input type="text" id="emailaddress" class="form-control form-control-lg" name="emailaddress"/>
                   <label class="form-label" for="emailaddress">Email address</label>
                 </div>
               </div>
             </div>
             
               <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-success btn-lg gradient-custom-4 "  
-                id="createButton">Create vendor</button>
+                <button type="submit" class="btn btn-success btn-lg gradient-custom-4 " id="createButton">Create vendor</button>
               </div>
-            <!-- </div> -->
-            <!-- class="input-group mb-3" -->
+          
         </form>
     </div>
   </div>  

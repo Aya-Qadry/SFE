@@ -32,8 +32,13 @@ public class OrderServicesImpl implements OrderServices {
     }
 
     @Override
-    public Optional<Order> findById(int id) {
+    public Order findById(int id) {
        return repository.findById(id) ; 
+    }
+
+    @Override
+    public Long getTotalOrders() {
+        return repository.count();
     }
 
 }

@@ -34,7 +34,7 @@
 
             <form th:action="@{/adminhome/stock/addToStock}" method="post" id="container" >
                     <tr>
-                        <th>Category's name</th>
+                        <th>Unit</th>
                         <td>
                             <select name="unit_id" class="form-select" >
                                 <option value="" >Select a measurement unit</option>
@@ -46,7 +46,7 @@
                     <tr>
                         <th>Price</th>
                         <td>
-                            <input type="number" name="price" id="price"  >
+                            <input type="text" name="price" id="price" >
                         </td>
                     </tr>
                     <tr>
@@ -55,19 +55,19 @@
                             <input type="number" name="quantity" id="quantity" >
                         </td>
                     </tr>
-                    <tr class="clone" id="clone">
+                    <!-- <tr class="clone" id="clone">
                         <td id="minus">
                             <button type="button" onclick="remove(this)" id="minusbtn"><i
                                     class="fa fa-minus"></i></button>
                         </td>
-                    </tr>
-                    <tr hidden>
+                    </tr> -->
+                   
                         <input type="text" name="product_id" th:value="${product_id}" hidden>
-                        <input type="text" th:text="${product_id}" hidden>
-                    </tr>
-                    <button style="margin-right: 10px;" type="button" onclick="add()"><i class="fa fa-plus"></i></button>
+                        <!-- <input type="text" th:text="${product_id}" hidden> -->
+               
+                    <!-- <button style="margin-right: 10px;" type="button" onclick="add()"><i class="fa fa-plus"></i></button> -->
 
-                    <br><button type="submit" class="btn btn-success">Add</button>
+                    <tr><th><button type="submit" class="btn btn-success">Add</button></th></tr>
 
 
 
@@ -79,27 +79,27 @@
 
     <script>
 
-        var container = document.getElementById('container');
-        document.querySelector('#table .clone').style.display = 'none';
+        // var container = document.getElementById('container');
+        // document.querySelector('#table .clone').style.display = 'none';
 
-        function add() {
-            var table = document.getElementById('table');
-            // container.appendChild(table.cloneNode(true));
+        // function add() {
+        //     var table = document.getElementById('table');
+        //     // container.appendChild(table.cloneNode(true));
 
-            var clonedRow = table.lastElementChild.cloneNode(true);
-            clonedRow.querySelectorAll('input[type="number"]').forEach(input => input.value = ''); // Clear input values
-            clonedRow.querySelectorAll('input[type="text"]').forEach(input => input.value = ''); // Clear input values
-            clonedRow.querySelectorAll('option').forEach(input => input.value = ''); // Clear input values
+        //     var clonedRow = table.lastElementChild.cloneNode(true);
+        //     clonedRow.querySelectorAll('input[type="number"]').forEach(input => input.value = ''); // Clear input values
+        //     clonedRow.querySelectorAll('input[type="text"]').forEach(input => input.value = ''); // Clear input values
+        //     clonedRow.querySelectorAll('option').forEach(input => input.value = ''); // Clear input values
 
-            table.appendChild(clonedRow);
+        //     table.appendChild(clonedRow);
 
-            // show the remove button in the cloned row only
-            clonedRow.querySelector('.clone').style.display = 'inline';
-        }
-        function remove(button) {
-            var table = button.parentNode.parentNode.parentNode;
-            table.parentNode.removeChild(table);
-        }
+        //     // show the remove button in the cloned row only
+        //     clonedRow.querySelector('.clone').style.display = 'inline';
+        // }
+        // function remove(button) {
+        //     var table = button.parentNode.parentNode.parentNode;
+        //     table.parentNode.removeChild(table);
+        // }
 
     </script>
 </body>

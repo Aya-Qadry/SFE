@@ -1,264 +1,220 @@
 <!DOCTYPE html>
-<html lang="en" 
-    xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
-    crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
-    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
     crossorigin="anonymous"></script>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
 
-    <script src="/js/fragments.js"></script>
-    <link rel="stylesheet" href="/css/fragments.css">
-    <style>
-            /* The switch - the box around the slider */
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
+  <script src="/js/fragments.js"></script>
+  <link rel="stylesheet" href="/css/fragments.css">
+  <link rel="stylesheet" href="/css/request.css">
 
-    /* Hide default HTML checkbox */
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    /* The slider */
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-
-    input:focus + .slider {
-      box-shadow: 0 0 1px #2196F3;
-    }
-
-    input:checked + .slider:before {
-      -webkit-transform: translateX(26px);
-      -ms-transform: translateX(26px);
-      transform: translateX(26px);
-    }
-    
-
-    
-    .buttons-container {
-      display: flex;
-      align-items: center;
-      gap: 11px; /* adds spacing between the buttons */
-    }
-
-    .buttons-container a {
-      display: inline-block;
-      width: 30px; /* sets the width of each button */
-      height: 30px; /* sets the height of each button */
-      text-align: center;
-      line-height: 30px;
-      border: none;
-    }
-
-    .buttons-container input[type="checkbox"] {
-      margin-top: 10.5px;
-      margin-left: 2px;
-    }
-    </style>
 </head>
+
 <body>
 
-    <div th:replace="fragments :: nav" ></div>   
-    
-    <div class="main-container d-flex">
-    <div th:replace="fragments :: menu" ></div>
+  <div th:replace="fragments :: nav"></div>
+
+  <div class="main-container d-flex">
+    <div th:replace="fragments :: menu"></div>
 
     <div class="container">
-        <div align="center">
-            <h1>Pending requests</h1>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Full name</th>
-                        <th>CIN</th>
-                        <th>Phone number</th>
-                        <th>Email address</th>
-                        <!-- <th>Request status</th> -->
-                        <th>Creation date</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tr th:each="request : ${requestlist}">
-                    <td th:text="${request.firstname + ' ' + request.lastname}" id="fullname" ></td>
-                    <td th:text="${request.cin}"   id="cin"></td>
-                    <td th:text="${request.phonenumber}"   id="phonenumber"></td>
-                    <td th:text="${request.emailaddress}"   id="emailaddress"></td>
-                    <!-- <td th:text="${request.enabled}"></td> -->
-                    <td th:text="${request.date}"></td>
-                    <!-- <td th:text="${request.id}" id="id" hidden></td> -->
-                    <td >
-                      <p th:text="${request.id}" hidden></p>
-                      <div class="buttons-container" style="display: flex; align-items: center;">
-                        <a th:href="@{/adminhome/deleteRequest/{id}(id=${request.id})}" class="btn" style="padding: 0;">
-                          <i class="fal fa-trash-alt" style="color: #ff0000;"></i>
-                        </a>
-                    
-                        <div class="form-check form-switch" style="margin: 0; padding: 0;">
-                          <a href="#enableModal" data-toggle="modal" data-target="#enableModal" style="padding: 0;">
-                            <input class="form-check-input" type="checkbox" role="switch" id="switch">
-                          </a>
-                        </div>
-                    
-                        <a data-toggle="modal" href="#exampleModalCenter" data-target="#exampleModalCenter" id="infoButton" style="padding: 0;">
-                          <i class="far fa-info-circle" style="color: #398fac;"></i>
-                        </a>
-                      </div>
+      <div align="center">
+        <h1>Pending requests</h1>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Full name</th>
+              <th>CIN</th>
+              <th>Phone number</th>
+              <th>Email address</th>
+              <!-- <th>Request status</th> -->
+              <th>Creation date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tr th:each="request : ${requestlist}">
+            <td th:text="${request.firstname + ' ' + request.lastname}" id="fullname"></td>
+            <td th:text="${request.cin}" id="cin"></td>
+            <td th:text="${request.phonenumber}" id="phonenumber"></td>
+            <td th:text="${request.emailaddress}" id="emailaddress"></td>
+            <!-- <td th:text="${request.enabled}"></td> -->
+            <td th:text="${request.date}"></td>
+            <td>
+              <div class="buttons-container" style="display: flex; align-items: center;">
+                <a th:href="@{/adminhome/deleteRequest/{id}(id=${request.id})}" id="deleteButton" class="btn" style="padding: 0;">
+                  <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
 
-                    <!-- Enable modal -->
-                    <div class="modal fade" id="enableModal" tabindex="-1" role="dialog" aria-labelledby="enableModal" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                          <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to enable this request ?</h5>
-                          </div>
-                          <div class="modal-body">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelButton">Cancel</button>
-                              <form th:action="@{/adminhome/enableRequest/{id}(id=${request.id})}" method="get" style="display: none;">
-                                  <button type="submit"  id="confirmButton" class="btn btn-success">Yes</button>
-                              </form>
-                          </div>
-                          <div class="modal-footer">
-                         
-                          </div>
-                      </div>
-                      </div>
-                  </div>
-                  <!-- show request's details modal -->
-                <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLongTitle">Request's details</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body" id="modal-body">
-
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                  <tbody>
-                                    <tr>
-                                      <th>Full name</th>
-                                      <td><input type="text" class="form-control" id="fullname" value="" readonly></td>
-                                    </tr>
-                                    <tr>
-                                      <th>Cin</th>
-                                      <td><input type="text" class="form-control" id="cin" value="" readonly></td>
-                                    </tr>
-                                    <tr>
-                                      <th>Phone number</th>
-                                      <td><input type="text" class="form-control" id="phonenumber" value="" readonly></td>
-                                    </tr>
-                                    <tr>
-                                      <th>Email address</th>
-                                      <td><input type="text" class="form-control" id="emailaddress" value="" readonly></td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>                      
-                        </div>
-                        <div class="modal-footer">
-                          <input type="hidden" name="id">
-                        </div>
-                      </div>
-                    </div>
+                <div class="form-check form-switch" style="margin: 0; padding: 0;">
+                  <a th:href="@{/adminhome/enableRequest/{id}(id=${request.id})}" id="enableButton" class="btn" style="padding: 0;">
+                    <input class="form-check-input" type="checkbox" role="switch" id="switch">
+                  </a>
                 </div>
-                
-              </td>
-             </tr>
-            </table>
-        </div>  
-    </div>
+
+                <a th:href="@{/adminhome/showRequest/{id}(id=${request.id})}" class="btn" id="infoButton"
+                  style="padding: 0;">
+                  <i class="far fa-info-circle" style="color: #398fac;"></i></a>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Enable modal -->
+      <div class="modal fade" id="enableModal" tabindex="-1" role="dialog" aria-labelledby="enableModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to enable this request ?
+              </h5>
+            </div>
+            <div class="modal-body">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelButton">Cancel</button>
+                <a href=""  id="confirmButton" class="btn btn-success">Yes , enable</a>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      
+
+      <!-- Delete modal -->
+      <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="removeModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="removeModalCenterTitle">Delete alert</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p class="alert alert-danger">
+                Are You sure You want to delete this request?
+              </p>
+              <p id="id"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelButton">Cancel</button>
+              <a href="" class="btn btn-danger" id="delRef">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- show request's details modal -->
+      <div class="modal fade" id="infoModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Request's details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <tbody>
+                    <tr>
+                      <th>Full name</th>
+                      <td><input type="text" class="form-control" id="fullname" value="" readonly></td>
+                    </tr>
+                    <tr>
+                      <th>Cin</th>
+                      <td><input type="text" class="form-control" id="cin" value="" readonly></td>
+                    </tr>
+                    <tr>
+                      <th>Phone number</th>
+                      <td><input type="text" class="form-control" id="phonenumber" value="" readonly></td>
+                    </tr>
+                    <tr>
+                      <th>Email address</th>
+                      <td><input type="text" class="form-control" id="emailaddress" value="" readonly></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <input type="hidden" name="id">
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     </div>
+  </div> 
+
+  <script>
+
+    $(document).ready(function () {
+
+      //info button
+      $('.table #infoButton').click(function (e) {
+        e.preventDefault();
+        var href = '';
+        href = $(this).attr('href');
+        // $("#infoButton").attr('href',href);
+        $.get(href, function (request, status) {
+          // $('#infoModalCenter #name').val(request.name);
+          $('#infoModalCenter #fullname').val(request.firstname);
+          $('#infoModalCenter #cin').val(request.cin);
+          $('#infoModalCenter #emailaddress').val(request.emailaddress);
+          $('#infoModalCenter #phonenumber').val(request.phonenumber);
+        });
+        $('#infoModalCenter').modal('show');
+        $('#closeBtn').click(function () {
+          $('#infoModalCenter').modal('hide');
+        });
+      });
+
+      // delete button
+      $('.table #deleteButton').on('click', function (event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+        $('#removeModalCenter #delRef').attr('href', href);
+       
+        $('#removeModalCenter').modal('show');
+        $('#cancelButton , #closeButton').on('click', function () {
+          $('#removeModalCenter').modal('hide');
+        });
+      }); 
     
-    
+      // enable button
+      $('.table #enableButton').on('click', function (event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+        $('#enableModal #confirmButton').attr('href', href);
+        $('#enableModal').modal('show');
+        $('#cancelButton').click(function () {
+          $('#enableModal').modal('hide');
+        });
+      }); 
 
-  
+    });
 
-    <script>
+  </script>
 
-        $(document).ready(function() {
-
-          
-            $('#infoButton').click(function(e) {
-            e.preventDefault();
-          var id = $('#id').text();
-                var fullname = $('#fullname').text();
-                var cin = $('#cin').text();
-                var emailaddress = $('#emailaddress').text();
-                var phonenumber = $('#phonenumber').text();
-
-                $('#modal-body #fullname').val(fullname);
-                $('#modal-body #cin').val(cin);
-                $('#modal-body #emailaddress').val(emailaddress);
-                $('#modal-body #phonenumber').val(phonenumber);
-                $('#exampleModalCenter').modal('show');
-                
-            $('#closeButton').click(function(e) {
-            e.preventDefault();
-          var id = $('#id').text();
-
-            $('#exampleModalCenter').modal('hide');
-            });
-            });
-
-          $('#switch').click(function(e){
-                e.preventDefault();
-          var id = $('#id').text();
-
-                $("#enableModal").modal('show');
-                $("#cancelButton").click(function(e){
-                  $('#enableModal').modal('hide');
-                })
-            });
-          });
-        
-    </script>
-    
-    <script src="/js/fragments.js"></script>
+  <script src="/js/fragments.js"></script>
 </body>
+
 </html>

@@ -13,7 +13,9 @@ import dut.stage.sfe.model.Vendor;
 
 public interface DeliveryAddressServices {
     
-    void saveDeliveryAddress(DeliveryAddress deliveryAddress ,  Vendor vendor);
+    void saveDeliveryAddress(DeliveryAddress deliveryAddress ,  User user);
+    void updateDeliveryAddress(DeliveryAddress deliveryAddress , User user);
     // Optional<DeliveryAddress> findByZipCode(String zipcode);
-    // DeliveryAddress findByUser_Id(int user_id);
+    DeliveryAddress findByUser_Id(int user_id);
+    void deleteByUserid(int user_id);
 }

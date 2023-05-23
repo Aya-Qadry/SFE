@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+    <script src="/js/fragments.js"></script>
+    <link rel="stylesheet" href="/css/fragments.css">
+</head>
+
+<body>
+    <div th:replace="fragments :: nav"></div>
+
+    <div class="main-container d-flex">
+        <div th:replace="fragments :: menu"></div>
+
+        <div class="container"> 
+            <a class="btn btn-outline-success" th:href="@{/adminhome/users/addUser}" style="margin: 10px;">+ Add a
+                user</a>
+            <div align="center">
+                <h1>Users list</h1>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>User Id</th>
+                            <th>Full name</th>
+                            <th>Role</th>
+                            <th>CIN</th>
+                            <th>Gender</th>
+                            <th>Email address</th>
+                            <th>Phone number</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tr style="cursor: pointer;" th:each="user : ${userlist}" id="row" th:href="@{/adminhome/users/showUser/{id}(id=${user.user_id})}" >
+                        <td th:text="${user.user_id}"></td>
+                        <td th:text="${user.firstname + ' ' + user.lastname}"></td>
+                        <td th:text="${user.roles}"></td>
+                        <td th:text="${user.cin}"></td>
+                        <td th:text="${user.gender}"></td>
+                        <td th:text="${user.emailaddress}"></td>
+                        <td th:text="${user.phonenumber}"></td>
+                        <td th:text="${user.date}"></td>
+                        <td>
+
+                            <a th:href="@{/adminhome/users/deleteUser/{id}(id=${user.user_id})}" id="deleteButton"
+                                class="btn" style="padding: 0;">
+                                <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
+                            <a th:href="@{/adminhome/users/showUser/{id}(id=${user.user_id})}" class="btn"
+                                id="infoButton">
+                                <i class="far fa-info-circle" style="color: #398fac;"></i></a>
+                            <a th:href="@{/adminhome/users/updateUser/{id}(id=${user.user_id})}" class="btn" id="updateButton" style="padding: 0;">
+                                <i class="fal fa-edit" style="color: #37a136;"></i></a>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="removeModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="removeModalCenterTitle">Delete alert</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeButton">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p class="alert alert-danger">
+                                Are You sure You want to delete this user?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="cancelButton">Cancel</button>
+                            <a href="" class="btn btn-danger" id="delRef">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info modal -->
+            <div class="modal fade" id="infoModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="infoModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">User details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="modal-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>User Id</th>
+                                            <td><input type="text" class="form-control" id="user_id" name="user_id" readonly value=""></td> 
+                                        </tr>
+                                        <tr>
+                                            <th>Full name</th>
+                                            <td><input type="text" class="form-control" id="fullname" name="fullname" readonly value=""></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Cin</th>
+                                            <td><input type="text" class="form-control" id="cin" value="" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gender</th>
+                                            <td><input type="text" class="form-control" id="gender" value="" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone number</th>
+                                            <td><input type="text" class="form-control" id="phonenumber" value="" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email address</th>
+                                            <td><input type="text" class="form-control" id="emailaddress" value="" readonly></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END -->
+
+        </div>
+    </div>
+
+    <script>
+        
+        $(document).ready(function () {
+            $('.table #deleteButton').on('click', function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                $('#removeModalCenter #delRef').attr('href', href);
+                $('#removeModalCenter').modal('show');
+                $('#cancelButton , #closeButton').on('click', function () {
+                    $('#removeModalCenter').modal('hide');
+                });
+            });
+            //info button
+            $('.table #infoButton').click(function (e) {
+                e.preventDefault();
+                var href = '';
+                href = $(this).attr('href');
+                // $("#infoButton").attr('href',href);
+                $.get(href, function (user, status) {
+                    var fullname = user.firstname +' '+user.lastname ; 
+                    $('#infoModalCenter #user_id').val(user.user_id)
+                    $('#infoModalCenter #fullname').val(fullname);
+                    $('#infoModalCenter #cin').val(user.cin);
+                    // $('#infoModalCenter #role').val(user.roles);
+                    $('#infoModalCenter #gender').val(user.gender);
+                    $('#infoModalCenter #emailaddress').val(user.emailaddress);
+                    $('#infoModalCenter #phonenumber').val(user.phonenumber);
+                });
+                $('#infoModalCenter').modal('show');
+                $('#infoModalCenter #closeButton').click(function () {
+                    $('#infoModalCenter').modal('hide');
+                });
+            });
+            $('.table #row').click(function (e) {
+                var row=document.getElementById('row');
+                e.preventDefault();
+                var href = ''; 
+                href = $(this).attr('href');
+
+                // $("#infoButton").attr('href',href);
+                $.get(href, function (user, status) {
+                    var fullname = user.firstname +' '+user.lastname ; 
+                    $('#infoModalCenter #user_id').val(user.user_id)
+                    $('#infoModalCenter #fullname').val(fullname);
+                    $('#infoModalCenter #cin').val(user.cin);
+                    // $('#infoModalCenter #role').val(user.roles);
+                    $('#infoModalCenter #gender').val(user.gender);
+                    $('#infoModalCenter #emailaddress').val(user.emailaddress);
+                    $('#infoModalCenter #phonenumber').val(user.phonenumber);
+                });
+                $('#infoModalCenter').modal('show');
+                $('#infoModalCenter #closeButton').click(function () {
+                    $('#infoModalCenter').modal('hide');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -22,7 +22,13 @@ public class OrderProductServicesImpl implements OrderProductServies{
     @Override
     public void deleteByOrderid(int order_id) {
         repository.deleteByOrderid(order_id);
-    } 
+    }
+
+    @Override
+    public OrderProducts findByOrderid(int order_id) {
+        return repository.findByOrderid(order_id);
+    }
+    
 
 
 }

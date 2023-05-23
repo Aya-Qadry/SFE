@@ -29,5 +29,10 @@ public class ProductServicesImpl implements ProductServices{
         Product p = repository.findById(id).orElse(null) ; 
         return p;
     }
+
+    @Override
+    public Long getTotalProducts() {
+        return repository.count();
+    }
     
 }

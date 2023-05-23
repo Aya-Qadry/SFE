@@ -1,20 +1,30 @@
 package dut.stage.sfe.model;
 
-
 import jakarta.persistence.*;
 import java.lang.Integer;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
+import javax.management.relation.RoleStatus;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Component
-@Table(name="user")
-public class User{
+@Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private int user_id;
 
     public int getUser_id() {
@@ -24,13 +34,68 @@ public class User{
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
-    private String firstname ; 
-    private String lastname ; 
-    private String emailaddress ;
-    private String phonenumber; 
-    private String password ;
-    private String cin ; 
-    private String gender ; 
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (photos == null || user_id == 0)
+            return null;
+        return "/users-photos/" + user_id + "/" + photos;
+    }
+
+    
+    @Column(nullable = true, length = 128)
+    private String photos;
+
+    public String getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(String photos) {
+        this.photos = photos;
+    }
+
+
+    private String firstname;
+    private String lastname;
+    private String emailaddress;
+    private String phonenumber;
+    private String password;
+    private String cin;
+    private String gender;
+
+    @CreationTimestamp
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private LocalDateTime date ; 
+    
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
+    public boolean hasAuthority(String roleName) {
+        Iterator<Role> it = this.roles.iterator();
+        while (it.hasNext()) {
+            Role role = it.next();
+            System.out.println(role.getName());
+            if (role.getName().equals(roleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
 
     public String getGender() {
         return gender;
@@ -48,61 +113,70 @@ public class User{
         this.cin = cin;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id" , referencedColumnName = "role_id", nullable = false )
-    private Roles role;
-
-
     public User() {
     }
-    public Roles getRole() {
-        return role;
-    }
-    public void setRole(Roles role) {
-        this.role = role;
-    }
+
     public void setPassword(String password) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         this.password = passwordEncoder.encode(password);
     }
+
     public User(Request request) {
         this.firstname = request.getFirstname();
         this.lastname = request.getLastname();
         this.password = request.getPassword();
         this.emailaddress = request.getEmailaddress();
-        this.phonenumber = request.getPhonenumber() ; 
+        this.phonenumber = request.getPhonenumber();
         this.cin = request.getCin();
-        this.gender = request.getGender() ; 
-        // this.roles = Collections.singleton(new Role("ROLE_USER"));
+        this.gender = request.getGender();
     }
+    
+
+
     public String getFirstname() {
         return firstname;
     }
-    
+
     public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
+
     public String getLastname() {
         return lastname;
     }
+
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
     public String getEmailaddress() {
         return emailaddress;
     }
+
     public void setEmailaddress(String emailaddress) {
         this.emailaddress = emailaddress;
     }
+
     public String getPhonenumber() {
         return phonenumber;
     }
+
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
+
     public String getPassword() {
         return password;
     }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
    
-    
+
 }

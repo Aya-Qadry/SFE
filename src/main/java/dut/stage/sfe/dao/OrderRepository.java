@@ -7,5 +7,5 @@ import dut.stage.sfe.model.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Integer>{
-    
+    Order findById(int id);
 }

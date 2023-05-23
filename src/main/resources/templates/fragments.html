@@ -19,7 +19,7 @@
   <div class="content" th:fragment="nav">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <img src="/images/name.jpg" alt="" width="215" height="20" class="d-inline-block align-text-top">
+        <img src="/images/Vertical-logo.png" alt="" width="215" height="60" class="d-inline-block align-text-top">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -51,7 +51,7 @@
       </div>
 
       <ul class="list-unstyled px-2">
-        <li class="active"><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-home"></i>
+        <li class="active"><a th:href="@{/adminhome/user/dashboard}" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-home"></i>
             Home</a></li>
 
         <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-user-tag"></i>
@@ -84,8 +84,8 @@
 
         <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-users"></i> Users</a>
           <ul class="sub-menu" style="list-style: none ;">
-            <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-list-ul"></i> Show list of users</a></li>
-            <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-plus"></i> Add a user</a>
+            <li><a th:href="@{/adminhome/users/listusers}" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-list-ul"></i> Show list of users</a></li>
+            <li><a th:href="@{/adminhome/users/addUser}" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-plus"></i> Add a user</a>
             </li>
           </ul>
         </li>

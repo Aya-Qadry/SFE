@@ -1,9 +1,12 @@
 package dut.stage.sfe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name="stock")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Stock {
     
     @Id

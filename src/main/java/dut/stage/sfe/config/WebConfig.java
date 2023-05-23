@@ -15,6 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
         exposeDirectory("product-photos", registry);
+        exposeDirectory("users-photos", registry);
     }
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
@@ -44,5 +45,6 @@ public class WebConfig implements WebMvcConfigurer {
         if(dirName.startsWith("../")) dirName = dirName.replace("../", "");
         registry.addResourceHandler("/"+dirName+"/**").addResourceLocations("file:/"+uploadPath+"/");
     }
+     
 
 }

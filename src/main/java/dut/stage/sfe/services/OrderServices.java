@@ -8,5 +8,7 @@ import dut.stage.sfe.model.Order;
 public interface OrderServices {
     List<Order> findAllOrders();
     void deleteById(int id);
-    Optional<Order> findById(int id);
+    Order findById(int id);
+    Long getTotalOrders();
+    // Order findById(int id);
 }

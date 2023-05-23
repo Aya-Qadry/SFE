@@ -28,7 +28,7 @@ public class ConfigurationController {
     @Autowired
     ShippingOptionServiceImpl shippingService ; 
     
-    @Autowired
+    @Autowired 
     UnitRepository repository ; 
 
     @GetMapping("/listunits")

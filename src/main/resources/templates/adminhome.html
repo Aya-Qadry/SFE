@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" 
-    xmlns:th="http://www.thymeleaf.org">
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -24,7 +25,10 @@
 
     <div th:replace="fragments :: nav" ></div>    
     <div th:replace="fragments :: menu" style="margin-right: 0%; max-width: 280px;"></div>         
-
+   
+    <div sec:authorize="hasAnyAuthority('VENDOR')">
+        <a >Edit</a>
+    </div>
     <script src="/js/fragments.js"></script>
 
    

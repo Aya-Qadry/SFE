@@ -12,4 +12,5 @@ public interface RequestServices {
     void saveRequest(Request request);
     List<Request> findAll();
     void deleteById(int id);
+    Long getTotalRequests();
 }

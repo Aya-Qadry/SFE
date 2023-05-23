@@ -1,17 +1,17 @@
 #side_nave{
-    background: rgb(5, 109, 5);
+    background: #006249;
     max-width: fit-content ;
     min-width: 280px ;
-    min-height: 100vh;
     height: 100%;
+    min-height: 100vh;
     /* margin-top: 0%;
     padding-top: 0%; */
     /* position: static; */
 }
-.content{
-    min-height: fit-content;
-    /* box-sizing: border-box; */
-    width: 100%;
+.content{ 
+    /* box-sizing :border-box; */
+
+    /* width: 100%; */
    
 }
 hr.h-color{
@@ -39,10 +39,8 @@ hr.h-color{
         margin-left: 0;
     }
 }
-/* html, body {
+ html, body {
     height: 100%;
- } */
+ }
  
-.container{
-    /* margin-left: 280px; */
-}
+ .container{}

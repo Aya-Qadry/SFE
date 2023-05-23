@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" 
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
-    crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
-    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
-    crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+        integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+        crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
@@ -21,77 +20,163 @@
     <link rel="stylesheet" href="/css/fragments.css">
 
 </head>
+
 <body>
 
-    <div th:replace="fragments :: nav" ></div>   
-    
-    <div class="main-container d-flex">
-    <div th:replace="fragments :: menu" ></div>
+    <div th:replace="fragments :: nav"></div>
 
-    <div class="container">
-        <!-- <a th:href="@{/adminhome/vendorform}" class="btn btn-outline-info"> Add a vendor </a> -->
-        <div align="center">
-            <h1>Vendors list</h1>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Vendor Id</th>
-                        <th>Full name</th>
-                        <th>CIN</th>
-                        <th>Gender</th>
-                        <th>Phone number</th>
-                        <th>Action</th>
+    <div class="main-container d-flex">
+        <div th:replace="fragments :: menu"></div>
+
+        <div class="container">
+            <a th:href="@{/adminhome/vendorform}" class="btn btn-outline-info"> Add a vendor </a>
+            <div align="center">
+                <h1>Vendors list</h1>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Vendor Id</th>
+                            <th>Full name</th>
+                            <th>CIN</th>
+                            <th>Gender</th>
+                            <th>Phone number</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tr th:each="vendor : ${listVendors}">
+                        <td th:text="${vendor.user_id}"></td>
+                        <td th:text="${vendor.firstname + ' ' + vendor.lastname}"></td>
+                        <td th:text="${vendor.cin}"></td>
+                        <td th:text="${vendor.gender}"></td>
+                        <td th:text="${vendor.phonenumber}"></td>
+                        <td th:text="${vendor.user_id}" id="vendorId" hidden></td>
+                        <td>
+
+                            <a th:href="@{/adminhome/deleteVendor/{id}(id=${vendor.user_id})}" id="deleteButton" class="btn" style="padding: 0;">
+                                <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
+                            <a th:href="@{/adminhome/showVendor/{id}(id=${vendor.user_id})}" class="btn" id="infoButton">
+                                <i class="far fa-info-circle" style="color: #398fac;"></i></a>
+                            <a th:href="@{/adminhome/updateform/{id}(id=${vendor.user_id})}" class="btn" id="updateButton" style="padding: 0;">
+                                <i class="fal fa-edit" style="color: #37a136;"></i></a>
+                        </td>
+
                     </tr>
-                </thead>
-                <tr th:each="vendor : ${listVendors}">
-                    <td th:text="${vendor.vendor_id}"></td>
-                    <td th:text="${vendor.firstname + ' ' + vendor.lastname}"></td>
-                    <td th:text="${vendor.cin}"></td>
-                    <td th:text="${vendor.gender}"></td>
-                    <td th:text="${vendor.phonenumber}"></td>
-                    <td th:text="${vendor.vendor_id}" id="vendorId" hidden></td>
-                    <td>
-                        <a th:href="@{/adminhome/updateform/{id}(id=${vendor.vendor_id})}" class="btn"> <i class="far fa-user-edit"></i></a>
-                        <a href="#modal" data-toggle="modal" data-target="#modal" class="btn" id="deleteButton"><i class="far fa-user-times" style="color: #da1c07;"></i> </a>
-                        <!-- off <i class="fal fa-toggle-off"></i> -->
-                        <!-- Delete modal -->
-                        <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h4 class="modal-title" id="modalLabel">Delete account</h4>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        <p>Are you sure you want to delete your account permanently?</p>
-                                    </div>
-                                    <div class="modal-body">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelButton">Cancel</button>
-                                    <form method="GET" th:action="@{/adminhome/deleteVendor/{id}(id=${vendor.vendor_id})}" id="deleteForm">
-                                        <button type="submit" class="btn btn-danger" data-toggle="modal" id="submitButton">Yes , delete</button>       
-                                    </form>
-                                    </div>
-                                </div>
+                </table>
+            </div>
+
+            <!-- Delete modal -->
+            <div class="modal fade" id="removeModalCenter" tabindex="-1" aria-labelledby="modalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" id="closeButton"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure to delete this vendor permanently?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                                id="cancelButton">Cancel</button>
+                            <a href="" class="btn btn-danger" id="delRef">Delete vendor</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- show request's details modal -->
+            <div class="modal fade" id="infoModalCenter" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Vendor's details</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="modal-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <th>Full name</th>
+                                            <td><input type="text" class="form-control" id="fullname" value="" readonly>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>Cin</th>
+                                            <td><input type="text" class="form-control" id="cin" value="" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Gender</th>
+                                            <td><input type="text" class="form-control" id="gender" value="" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Phone number</th>
+                                            <td><input type="text" class="form-control" id="phonenumber" value="" readonly></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Email address</th>
+                                            <td><input type="text" class="form-control" id="emailaddress" value="" readonly></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                        </div> 
-                    </td>
-                    
-                </tr>
-            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="hidden" name="id">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
-</div>
-    
-      <script>
-        $(document).ready(function() {
-            $("#deleteButton").click(function(e) {
-            e.preventDefault();
-            $("#modal").modal('show');
-                $('#cancelButton').click(function(e){
-                    $("#modal").modal('hide');
+
+    <script>
+        $(document).ready(function () {
+
+            // delete button
+            $('.table #deleteButton').on('click', function (event) {
+                event.preventDefault();
+                var href = $(this).attr('href');
+                $('#removeModalCenter #delRef').attr('href', href);
+
+                $('#removeModalCenter').modal('show');
+                $('#cancelButton , #closeButton').on('click', function () {
+                    $('#removeModalCenter').modal('hide');
+                });
+            });
+
+            //info button
+            $('.table #infoButton').click(function (e) {
+                e.preventDefault();
+                var href = '';
+                href = $(this).attr('href');
+                // $("#infoButton").attr('href',href);
+                $.get(href, function (vendor, status) {
+                    var fullname = vendor.firstname +' '+vendor.lastname ; 
+                    $('#infoModalCenter #fullname').val(fullname);
+                    $('#infoModalCenter #cin').val(vendor.cin);
+                    $('#infoModalCenter #gender').val(vendor.gender);
+                    $('#infoModalCenter #emailaddress').val(vendor.emailaddress);
+                    $('#infoModalCenter #phonenumber').val(vendor.phonenumber);
+                });
+                $('#infoModalCenter').modal('show');
+                $('#closeButton').click(function () {
+                    $('#infoModalCenter').modal('hide');
                 });
             });
         });
+
+
     </script>
     <script src="/js/fragments.js"></script>
 
 </body>
+
 </html>

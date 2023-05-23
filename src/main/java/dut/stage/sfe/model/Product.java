@@ -2,10 +2,13 @@ package dut.stage.sfe.model;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "products")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product {
 
     @Id
@@ -21,7 +24,7 @@ public class Product {
     private Category category_id;
 
     private String description;
-    private String name;
+    private String name; 
     private String product_code;
 
     @Transient

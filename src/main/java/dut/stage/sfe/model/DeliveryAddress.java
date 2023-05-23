@@ -1,10 +1,13 @@
 package dut.stage.sfe.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 
 
 @Entity
 @Table(name = "deliveryaddress")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class DeliveryAddress {
 
     @Id
@@ -25,26 +28,30 @@ public class DeliveryAddress {
     }
     private String addressline ;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id" , referencedColumnName = "user_id", nullable = false )
-    private User user_id ;
+    @Column(name = "user_id")
+    private int userid;
 
-    public DeliveryAddress(String city, String zipcode, String addressline, User user_id) {
+
+    public int getUserid() {
+        return userid;
+    }
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id" , referencedColumnName = "user_id",insertable = false, updatable = false )
+    private User user ;
+
+    public DeliveryAddress(String city, String zipcode, String addressline, User user) {
         this.city = city;
         this.zipcode = zipcode;
         this.addressline = addressline;
-        this.user_id = user_id;
+        this.user = user;
     }
     public DeliveryAddress() {
     }
 
-    public User getUser_id() {
-        return user_id;
-    }
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
-    }
-    
     public String getZipcode() {
         return zipcode;
     }
@@ -56,6 +63,18 @@ public class DeliveryAddress {
     }
     public void setAddressline(String addressline) {
         this.addressline = addressline;
+    }
+    public int getDeliveryaddress_id() {
+        return deliveryaddress_id;
+    }
+    public void setDeliveryaddress_id(int deliveryaddress_id) {
+        this.deliveryaddress_id = deliveryaddress_id;
+    }
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     } 
 
 }

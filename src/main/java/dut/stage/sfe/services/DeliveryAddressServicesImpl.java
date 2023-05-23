@@ -12,24 +12,39 @@ import dut.stage.sfe.model.User;
 import dut.stage.sfe.model.Vendor;
 
 @Service
-public class DeliveryAddressServicesImpl implements DeliveryAddressServices{
+public class DeliveryAddressServicesImpl implements DeliveryAddressServices {
 
     @Autowired
-    private DeliveryAddressRepository repository ; 
+    private DeliveryAddressRepository repository;
 
     @Override
-    public void saveDeliveryAddress(DeliveryAddress deliveryAddress , Vendor vendor) {
-        deliveryAddress.setUser_id(vendor.getUser());
+    public void saveDeliveryAddress(DeliveryAddress deliveryAddress, User user) {
+        deliveryAddress.setUser(user);
+        deliveryAddress.setUserid(user.getUser_id());
         repository.save(deliveryAddress);
     }
 
-    // @Override
-    // public DeliveryAddress findByUser_Id(int user_id) {
-    //     return repository.findByUser_id(user_id);
-    // }
+    @Override
+    public DeliveryAddress findByUser_Id(int user_id) {
+        return repository.findByUserid(user_id);
+    }
 
-    
+    @Override
+    public void updateDeliveryAddress(DeliveryAddress deliveryAddress, User user) {
+        DeliveryAddress existingAddress = repository.findByUserid(user.getUser_id());
+        
+        if (existingAddress != null) {
+            existingAddress.setCity(deliveryAddress.getCity());
+            existingAddress.setAddressline(deliveryAddress.getAddressline());
+            existingAddress.setZipcode(deliveryAddress.getZipcode());
+            repository.save(existingAddress);
+        }
+    }
 
-   
-    
+    @Override
+    public void deleteByUserid(int user_id) {
+        repository.deleteByUserid(user_id);
+    }
+
+
 }
