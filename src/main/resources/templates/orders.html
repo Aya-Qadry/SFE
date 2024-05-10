@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta order_id="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Orders</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -16,48 +16,88 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
 
-    <script src="/js/fragments.js"></script>
-    <link rel="stylesheet" href="/css/fragments.css">
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
+    <script src="/js/fragments.js"></script>
+    <script src="/js/orders.js"></script>
+
+    <link rel="stylesheet" href="/css/fragments.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <style>
+        tbody tr th {
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <div th:replace="fragments :: nav"></div>
+
+    <div th:replace="~{fragments :: nav(search=true)}"></div>
 
     <div class="main-container d-flex">
+        <div class="preloader flex-column justify-content-center align-items-center" style="background-color: white;">
+            <img class="animation" src="/images/Horizonal-A-Logo.jpg" alt="AvonFruitsLogo" height="30%" width="100%">
+        </div>
         <div th:replace="fragments :: menu"></div>
-        <div class="container">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Order</th>
-                        <th>Customer</th>
-                        <th>Shipping option</th>
-                        <th>Created at</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="order : ${orderlist}">
-                        <td th:text="${order.order_id}" id="order_id"></td>
-                        <td th:text="${order.customer.firstname+' '+order.customer.lastname}" ></td>
-                        <td th:text="${order.shipping.name}"></td>
-                        <td th:text="${order.date}" id="date"></td>
-                        <td>
-                            <a th:href="@{/adminhome/orders/deleteOrder/{id}(id=${order.order_id})}" id="deleteButton"
-                                class="btn" style="padding: 0;">
-                                <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
+        <div class="container-fluid" id="container-fluid">
+            <div align="center" class=" entireTbl" style="overflow: auto;">
+                <div class="top">
+                    <h4>Orders table</h4>
+                </div>
+                <table class="tbl" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Customer</th>
+                            <th>Shipping option</th>
+                            <th>Created at</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        <tr th:each="order : ${orderlist}" class="tr">
+                            <td th:text="${order.order_id}" id="order_id"></td>
+                            <td th:text="${order.customer.firstname+' '+order.customer.lastname}"></td>
+                            <td th:text="${order.shipping.name}"></td>
+                            <td th:text="${#temporals.format(order.date, 'MMMM d, yyyy HH:mm')}" id="date"></td>
+                            <td>
+                                <a th:href="@{/adminhome/orders/deleteOrder/{id}(id=${order.order_id})}"
+                                    id="deleteButton" class="btn" style="padding: 0;">
+                                    <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a> 
+                                <button class="btn show-order-details" th:attr="data-order-id=${order.order_id}">
+                                    <i class="far fa-info-circle" style="color: #398fac;"></i>
+                                </button>
 
-                            <a th:href="@{/adminhome/orders/showOrder/{id}(id=${order.order_id})}" class="btn"
-                                id="infoButton" style="padding: 0;">
-                                <i class="far fa-info-circle" style="color: #398fac;"></i></a>
-                        </td>
-                    </tr>
-                    <div hidden>
-                        <p th:text="${products?.price}" id="pr"></p>
-                    </div>
-                </tbody>
-            </table>
+
+                            </td>
+                        </tr>
+                        <div hidden>
+                            <p th:text="${products?.price}" id="pr"></p>
+                        </div>
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="card-footer ">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        Total Items [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
+                        &nbsp; &nbsp
+                    </ul>
+                    <ul class="pagination pagination-sm m-0 float-left"
+                        th:each="i: ${#numbers.sequence(1, totalPages)}">
+
+                        <!-- <li class="page-item"><a class="page-link" href="#">«</a></li> -->
+                        <li class="page-item"><a class="page-link"
+                                th:href="@{'/adminhome/orders/listorders/' + ${i}}">[[${i}]]</a></li>
+                        <!-- <li class="page-item"><a class="page-link" href="#">»</a></li> -->
+                        &nbsp; &nbsp;
+
+                    </ul>
+                </div>
+                <!-- End pagination -->
+            </div>
+
 
             <!-- Delete modal -->
             <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog"
@@ -66,7 +106,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="removeModalCenterTitle">Delete alert</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeButton">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -77,13 +118,13 @@
                             <p id="order_id"></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelButton">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                id="cancelButton">Cancel</button>
                             <a href="" class="btn btn-danger" id="delRef">Delete</a>
                         </div>
                     </div>
                 </div>
             </div>
-
             <!-- Info modal -->
             <div class="modal fade" id="infoModalCenter" tabindex="-1" role="dialog"
                 aria-labelledby="infoModalCenterTitle" aria-hidden="true">
@@ -91,87 +132,43 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Order's details</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButtn">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                id="closeButton">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body" id="modal-body">
 
                             <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <tbody>
+                                <table id="orderProductsTable">
+                                    <span id="fullname"></span>
+                                    <thead>
                                         <tr>
-                                            <th>Order Id</th>
-                                            <td><input type="text" class="form-control" id="order_id"  readonly value=""></td>
-                                            
-                                        </tr>
-                                        <tr>
-                                            <th>Customer</th>
-                                            <td><input type="text" class="form-control" id="customer" readonly value=""></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Shipping </th>
-                                            <td><input type="text" class="form-control" id="shipping" readonly value=""></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Delivery address</th>
-                                            <td><input type="text" class="form-control" id="address" readonly value=""></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Products</th>
-                                            <td><input type="text" class="form-control" id="product" readonly value=""></td>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
                                             <th>Price</th>
-                                            <td><input type="text" class="form-control" id="price" readonly value=""></td>
+                                            <th>Total Price</th>
                                         </tr>
-                                    </tbody>
+                                    </thead>
+                                    <tbody></tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            
+
+
         </div>
+
+    </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
+    <script src="/js/orders.js"></script>
+    <script src="/js/fragments.js"></script>
 
-            $('.table #deleteButton').on('click', function (event) {
-                event.preventDefault();
-                var href = $(this).attr('href');
-                $('#removeModalCenter #delRef').attr('href', href);
-                $('#removeModalCenter').modal('show');
-                $('#cancelButton , #closeButton').on('click', function () {
-                    $('#removeModalCenter').modal('hide');
-                });
-            });
-
-             //info button
-             $('.table #infoButton').click(function (e) {
-                e.preventDefault();
-                var href = $(this).attr('href');
-                $.get(href, function (order, status) {
-                    var fullname = order.order.customer.firstname+' '+order.order.customer.lastname; 
-                    var address = order.order.deliveryaddress.city +'-'+order.order.deliveryaddress.addressline ; 
-                    $('#infoModalCenter #order_id').val(order.order.order_id);
-                    $('#infoModalCenter #customer').val(fullname);
-                    $('#infoModalCenter #shipping').val(order.order.shipping.name);
-                    $('#infoModalCenter #address').val(address); 
-                    $('#infoModalCenter #product').val(order.stock_id.product.name);
-                    $('#infoModalCenter #price').val(order.stock_id.price);
-                    console.log(order.stock_id.price);
-
-                });
-                $('#infoModalCenter').modal('show');
-                $('#closeButton').click(function () {
-                    $('#infoModalCenter').modal('hide');
-                });
-            });
-
-        });
-    </script>
 </body>
 
 </html>

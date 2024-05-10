@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import dut.stage.sfe.dao.OrderProductRepository;
 import dut.stage.sfe.model.OrderProducts;
+import dut.stage.sfe.model.Stock;
 
 @Service
 public class OrderProductServicesImpl implements OrderProductServies{
@@ -25,8 +26,23 @@ public class OrderProductServicesImpl implements OrderProductServies{
     }
 
     @Override
-    public OrderProducts findByOrderid(int order_id) {
+    public List<OrderProducts> findByOrderid(int order_id) {
         return repository.findByOrderid(order_id);
+    }
+
+    @Override
+    public List<OrderProducts> findByStock(Stock stock) {
+        return repository.findByStock(stock);
+    }
+
+    @Override
+    public List<OrderProducts> findAll() {
+        return repository.findAll() ; 
+    }
+
+    @Override
+    public void deleteByStock(Stock stock) {
+        repository.deleteByStock(stock);
     }
     
 

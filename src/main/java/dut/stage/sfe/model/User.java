@@ -1,13 +1,16 @@
 package dut.stage.sfe.model;
 
 import jakarta.persistence.*;
-import java.lang.Integer;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import javax.management.relation.RoleStatus;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Component
 @Table(name = "user")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class User {
 
     @Id
@@ -42,7 +45,6 @@ public class User {
         return "/users-photos/" + user_id + "/" + photos;
     }
 
-    
     @Column(nullable = true, length = 128)
     private String photos;
 
@@ -54,19 +56,36 @@ public class User {
         this.photos = photos;
     }
 
-
+    @NotEmpty(message = "Fill the first name field")
     private String firstname;
+
+    @NotEmpty(message = "Fill the last name field")
     private String lastname;
+
+    @Email
+    @NotEmpty(message = "Fill the email address field")
     private String emailaddress;
+
+    @NotEmpty(message = "Fill the phone number field")
+    @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
+    @Pattern(regexp = "[0-9]+", message = "Phone number must contain only digits")
     private String phonenumber;
+
+    // @NotEmpty(message = "Fill the password field")
+    @Column(nullable = false)
     private String password;
+
+    @NotEmpty(message = "Fill the CIN field")
+    @Size(min = 4, max = 12, message = "CIN must be between 4 and 12 characters")
+    @Pattern(regexp = "[A-Za-z]+\\d*", message = "CIN must contain at least one character")
     private String cin;
+
+    @NotEmpty(message = "Select the correspondant gender")
     private String gender;
 
     @CreationTimestamp
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDateTime date ; 
-    
+    private LocalDateTime date;
 
     public LocalDateTime getDate() {
         return date;
@@ -76,9 +95,9 @@ public class User {
         this.date = date;
     }
 
-
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @NotNull(message = "Choose a correspondant role")
     private Set<Role> roles = new HashSet<>();
 
     public boolean hasAuthority(String roleName) {
@@ -130,8 +149,6 @@ public class User {
         this.cin = request.getCin();
         this.gender = request.getGender();
     }
-    
-
 
     public String getFirstname() {
         return firstname;
@@ -176,7 +193,5 @@ public class User {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
-   
 
 }

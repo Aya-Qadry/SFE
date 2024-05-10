@@ -1,19 +1,20 @@
 .description {
     display: -webkit-box;
     -webkit-line-clamp: 5;
-    /* or any desired number of lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-}
+} 
 
-#col {
+.col {
     padding-top: 10px;
-}
-
+    padding-right: 0%;
+    margin-right: 0%; 
+    flex: 0 0 0%;
+} 
 main {
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
     justify-content: center;
     align-items: center;
     padding: 50px;
@@ -28,20 +29,9 @@ main {
     cursor: pointer;
     position: relative;
     color: #f0f0f0;
-    box-shadow: 0 10px 30px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px 5px rgba(0, 0, 0, 0.2); 
 }
-
-.card img {
-    position: absolute;
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    opacity: 0.9;
-    transition: opacity 0.2s ease-out;
-}
-
+ 
 .card h2 {
     position: absolute;
     inset: auto auto 30px 30px;
@@ -51,7 +41,30 @@ main {
     font-weight: normal;
     text-transform: uppercase;
 }
-
+.card img{
+    position: absolute;
+    top: 0px;
+    right : 0px; 
+}
+.card   .product-img{
+    /* position: absolute; */
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0; 
+    opacity: 0.9;
+    transition: opacity 0.2s ease-out;
+}
+.card .stock{
+     z-index: 1;
+     padding: 5px;
+     /* filter: brightness( 60%); */
+}
+.card:hover .product-img{
+    transition: opacity 0.3s ease-in;
+    opacity: 1;
+} 
 .card p,
 .card a {
     position: absolute;
@@ -62,15 +75,7 @@ main {
 
 .card p {
     inset: auto auto 80px 30px;
-}
-/* .card .h6{
-    position: absolute;
-    opacity: 0;
-    max-width: 80%;
-    transition: opacity 0.4s ease-out;
-    inset: auto auto 82px 30px;
-
-} */
+} 
 .card a {
     inset: auto auto 40px 30px;
     color: inherit;
@@ -87,14 +92,24 @@ main {
 .card:hover a {
     opacity: 1;
     transition: opacity 0.5s 0.1s ease-in;
+} 
+.button-group {
+    display: flex;
 }
 
-.card:hover img {
-    transition: opacity 0.3s ease-in;
-    opacity: 1;
+.button-group #deleteButton {
+    margin-left: 200px;
 }
 
-.material-symbols-outlined {
-    vertical-align: middle;
+.button-group #addButton {
+    margin-left: 5px;
 }
-
+.grid-container {
+    display: grid; 
+    align-content: stretch;
+    justify-content: center;
+    padding: 20px;
+}
+#grid-item {
+    margin: 10px;
+}

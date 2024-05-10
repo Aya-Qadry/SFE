@@ -3,6 +3,8 @@ package dut.stage.sfe.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -16,8 +18,10 @@ public class DeliveryAddress {
     private int deliveryaddress_id ; 
 
     @Column(name="zipcode")
+    @NotEmpty(message = "Fill the zip code field")
     private String zipcode ; 
     
+    @NotNull(message = "Select a correspondant city")
     private String city ; 
     
     public String getCity() {
@@ -26,6 +30,8 @@ public class DeliveryAddress {
     public void setCity(String city) {
         this.city = city;
     }
+
+    @NotEmpty(message = "Fill the address line field")
     private String addressline ;
     
     @Column(name = "user_id")

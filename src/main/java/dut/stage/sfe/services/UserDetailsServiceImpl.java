@@ -14,7 +14,6 @@ import dut.stage.sfe.dao.UserRepository;
 import dut.stage.sfe.model.Request;
 import dut.stage.sfe.model.Role;
 import dut.stage.sfe.model.User;
-import dut.stage.sfe.model.Vendor;
 
 @Service("userDetailsService")
 @Component
@@ -32,7 +31,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("Could not find user");
         }
-        
         return new MyUserDetails(user);
     }
     @Autowired  
@@ -42,7 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public void registerVendor(User user) {
         Role roleUser = roleRepo.findById(2).orElse(null);
         user.addRole(roleUser);
-        System.out.println("lol");
+        // System.out.println("lol");
         userRepository.save(user);
     }
     

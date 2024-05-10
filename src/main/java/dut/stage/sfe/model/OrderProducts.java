@@ -30,7 +30,15 @@ public class OrderProducts {
 
     @ManyToOne
     @JoinColumn(name = "stock_id" , referencedColumnName = "stock_id", nullable = false )
-    private Stock stock_id ; 
+    private Stock stock  ; 
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public void setStock(Stock stock) {
+        this.stock = stock;
+    }
 
     private int quantity ; 
 
@@ -45,14 +53,7 @@ public class OrderProducts {
     public void setOrderproducts_id(int orderproducts_id) {
         this.orderproducts_id = orderproducts_id;
     }
-
-    public Stock getStock_id() {
-        return stock_id;
-    }
-
-    public void setStock_id(Stock stock_id) {
-        this.stock_id = stock_id;
-    }
+ 
 
     public int getQuantity() {
         return quantity;

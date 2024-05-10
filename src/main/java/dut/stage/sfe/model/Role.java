@@ -4,6 +4,7 @@ import java.lang.Integer;
 import java.util.Set;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -11,6 +12,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
+    @NotNull(message = "Choose the correct role")
     private int id;
      
     @Column(nullable = false, length = 45)

@@ -14,6 +14,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(name = "requests")
@@ -35,13 +36,31 @@ public class Request {
         this.enabled = enabled;
     }
 
-    private String firstname ; 
-    private String lastname ; 
-    private String emailaddress ;
-    private String phonenumber; 
-    private String password ;
-    private String cin ; 
-    private String gender ; 
+    @NotEmpty(message = "Fill the first name field")
+    private String firstname;
+
+    @NotEmpty(message = "Fill the last name field")
+    private String lastname;
+
+    @Email @NotEmpty(message = "Fill the email address field")
+    private String emailaddress;
+
+    @NotEmpty(message = "Fill the phone number field") 
+    @Size(min = 10, max = 15, message = "Phone number must be between 10 and 15 characters")
+    @Pattern(regexp = "[0-9]+", message = "Phone number must contain only digits")
+    private String phonenumber;
+
+    @Column(nullable= false)
+    private String password;
+
+    @NotEmpty(message = "Fill the CIN field")
+    @Size(min = 5 , max = 12 , message = "CIN must be between 5 and 12 characters")
+    @Pattern(regexp = "[A-Za-z]+\\d*", message = "CIN must contain at least one character")
+    private String cin;
+
+
+    @NotEmpty(message = "Select the correspondant gender")
+    private String gender;
     
     public String getGender() {
         return gender;

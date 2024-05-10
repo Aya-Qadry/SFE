@@ -27,24 +27,7 @@ public class MyUserDetails implements UserDetails {
     public MyUserDetails(User user) {
         System.out.println("Calling userDetailsService() method");
         this.user=user;
-    }
-
-    // @Override
-    // public Collection<? extends GrantedAuthority> getAuthorities() {
-    //     ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();        
-    //     // int roleId = ((MyUserDetails) authentication.getPrincipal()).user.getRole().getId();
-    //     // authorities.add(new SimpleGrantedAuthority(role.getName()));
-    //     int roleId = user.getRole().getId()  ;
-    //     if(roleId == 1 ){
-    //         authorities.add(new SimpleGrantedAuthority("ADMIN"));
-    //     }else if(roleId == 2 ){
-    //         authorities.add(new SimpleGrantedAuthority("VENDOR"));
-    //     }else if(roleId == 3)  {
-    //         authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
-    //     }
-    //     System.out.println("----------------------"+authorities);
-    //     return authorities ; 
-    // }
+    } 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

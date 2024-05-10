@@ -21,69 +21,44 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class LoginController {
 
     @Autowired
-    UserServicesImpl userServicesImpl ; 
+    UserServicesImpl userServicesImpl;
 
-    // @RequestMapping(value="/login", method = RequestMethod.GET)
-    // public String displayLogin(Model model){
-    //     model.addAttribute("login" , new Login());
-    //     return "login",
-    // }
     @GetMapping("/login")
-    public String getLoginForm(Model model){
-        User user = new User() ; 
+    public String getLoginForm(Model model) {
+        User user = new User();
         model.addAttribute("user", user);
         return "login";
     }
 
-    @PostMapping(value="/login")
-    public  void submit(Model model , @ModelAttribute("user") User user) {
+    // @PostMapping(value = "/login")
+    // public String submit(Model model, @ModelAttribute("user") User user) {
 
-        User test = userServicesImpl.findByEmailaddress(user.getEmailaddress());
-        // List<User> u = userServicesImpl.findByRoles_Name("ADMIN");
-        System.out.println("-----------------------------------------------");
-        // System.out.println(u);
-        if (user.getEmailaddress()==null || user.getEmailaddress().isBlank()){
-            model.addAttribute("message", "Fill the email field.");
-        }
-        if (user.getPassword()==null || user.getPassword().isBlank()){
-            model.addAttribute("message", "Fill the password field.");
-        }
-        if(test == null) {
-            model.addAttribute("message", "User does not exist.");
-        }
-            
-        if(!test.getPassword().equals(user.getPassword())) { 
-            model.addAttribute("message", "Incorrect password.");
-        }
-        // return "login";
-    }
+    //     User test = userServicesImpl.findByEmailaddress(user.getEmailaddress());
+    //     // List<User> u = userServicesImpl.findByRoles_Name("ADMIN");
+    //     System.out.println("-----------------------------------------------");
+    //     // System.out.println(u);
+    //     if (user.getEmailaddress() == null || user.getEmailaddress().isBlank()) {
+    //         model.addAttribute("message", "Fill the email field.");
+    //         return "login";
 
-    @GetMapping("/verification")
-    public String passwordPortal(Model model){
-        return "passwordportal";
-    }
-    @PostMapping("/verification")
-    public String passwordPortal(@RequestParam("emailaddress") String emailaddress , @RequestParam("code") String code , Model model){
-        User user  = userServicesImpl.findByEmailaddress(emailaddress);
-         model.addAttribute("id", user.getUser_id());
-        if(user==null){
-            model.addAttribute("popup", "email is wrong or doesnt exist");
-            System.out.println("wrong email address ");
-            return "redirect:/avonfruits/users/auth/passwordportal";
-        }else{
-            if(user.getPassword().equals(code)){
-                int id = user.getUser_id();
-                return "passwordportal";
-            }else{
-                System.out.println("wrong password");
-                model.addAttribute("popup", "wrong code");
-                return "passwordportal";
-            }
-        }   
-    }
+    //     }
+    //     if (user.getPassword() == null || user.getPassword().isBlank()) {
+    //         model.addAttribute("message", "Fill the password field.");
+    //         return "login";
 
-    // @PostMapping("/setpassword/{id}")
-    // public String passwordSetting(@RequestParam("password") String password , @PathVariable("id") int id){
-        
+    //     }
+    //     if (test == null) {
+    //         model.addAttribute("message", "User does not exist.");
+    //         return "login";
+
+    //     }
+
+    //     // if(!test.getPassword().equals(user.getPassword())) {
+    //     // model.addAttribute("message", "Incorrect password.");
+    //     // return "login";
+
+    //     // }
+    //     return "login";
     // }
+
 }

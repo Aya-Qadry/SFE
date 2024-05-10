@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Stock</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -14,35 +14,57 @@
     crossorigin="anonymous"></script>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
   <script src="/js/fragments.js"></script>
   <link rel="stylesheet" href="/css/liststock.css">
   <link rel="stylesheet" href="/css/fragments.css">
+  <link rel="stylesheet" href="/css/search.css">
 </head>
+<style>
+
+</style>
 
 <body>
 
   <div th:replace="fragments :: nav"></div>
   <div class="main-container d-flex">
+    <div class="preloader flex-column justify-content-center align-items-center" style="background-color: white;">
+      <img class="animation" src="/images/Horizonal-A-Logo.jpg" alt="AvonFruitsLogo" height="30%" width="50%">
+    </div>
     <div th:replace="fragments :: menu"></div>
-    <div class="container">
-      <h5>Products in stock</h5>
+    <div class="container-fluid" id="container-fluid">
 
-      <div class="row gx-3">
-        <div class="col-md-3 mb-3" th:each="stock : ${liststock}">
-          <!-- <div class="card"> -->
-          <div class="card product-card" id="${stock.product_id}">
-            <p hidden th:value="${stock.stock_id}" name="stock_id" id="stock_id"></p>
-            <img th:src="${stock.product.photosImagePath}">
-            <div class="card-content">
-              <h2 th:text="${stock.product.name}" id="product_name"></h2>
-              <p hidden th:text="${stock?.product_id}" id="product_id"></p>
-              <p hidden th:text="${stock.stock_id}" id="stock_id"></p>
-              <a class=" btn btn-danger" id="infoButton" ><i class="fa fa-info"></i> Show stock </a>
-              <p type="text" th:text="${stock.unit_id.name}" hidden id="unitname"></p>
-              <p type="text" th:text="${stock.price}" hidden id="price"></p>
-              <p type="text" th:text="${stock.quantity}" hidden id="quantity"></p>
+      <div class="grid-container">
+      <h4>Products in stock</h4>
+
+        <div class="row ">
+          <div class="col " th:each="stock : ${liststock}" id="grid-item"> 
+            <div class="card product-card" id="${stock.product_id}">
+              <p hidden th:value="${stock.stock_id}" name="stock_id" id="stock_id"></p>
+
+              <img th:src="${stock.product.photosImagePath}">
+              <div class="card-content">
+                <h2 th:text="${stock.product.name}" id="product_name"></h2>
+                <p hidden th:text="${stock?.product_id}" id="product_id"></p>
+                <p hidden th:text="${stock.stock_id}" id="stock_id"></p>
+
+                <div class="button-group">
+                  <a th:href="@{/adminhome/stock/deleteFromStock/{id}(id=${stock.product_id})}" id="deleteButton"
+                    class="btn btn-danger"> <i class="fa fa-trash"></i></a>
+                  <a class="btn btn-danger" id="infoButton"><i class="fa fa-info"></i> Show stock </a>
+                </div>
+
+                <p type="text" th:text="${stock.unit_id.name}" hidden id="unitname"></p>
+                <p type="text" th:text="${stock.price}" hidden id="price"></p>
+                <p type="text" th:text="${stock.quantity}" hidden id="quantity"></p>
+              </div>
+
             </div>
           </div>
         </div>
@@ -88,6 +110,30 @@
         </div>
       </div>
 
+      <!-- Delete Modal -->
+      <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog"
+        aria-labelledby="removeModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="removeModalCenterTitle">Delete alert</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p class="alert alert-danger">
+                Are You sure You want to delete this product from stock ?
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelButton">Cancel</button>
+              <a href="" class="btn btn-danger" id="delRef">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -116,12 +162,6 @@
       uniqueProducts[productId].quantities.push($(this).find('#quantity').text());
       console.log(uniqueProducts[productId]);
 
-      // if (jQuery.inArray(productId, uniqueProducts)) {
-      //   // $('data-product-id=' + productId + '"').hide();
-      //   $(this).hide();
-      //   console.log("Hide duplicate product with ID: " + productId);
-      // }
-
       $.each(uniqueProducts, function (key, value) {
         var productCards = $('.card').parent().filter(function () {
           return $(this).find('#product_id').text() == key;
@@ -134,45 +174,7 @@
       });
 
     });
-    // });
 
-
-
-    // $(document).ready(function () {
-    //   var productId = null;
-    //   $('.card #infoButton').click(function (e) {
-    //     e.preventDefault();
-    //     productId = $(this).closest('.card-content').find('#stock_id').text();
-    //     var productData = uniqueProducts[productId];
-
-    //     $('.table #name').val(productData.name);
-    //     $(".table #unit").val(productData.unitNames[0]);
-    //     $(".table #price").val(productData.prices[0]);
-    //     $(".table #quantity").val(productData.quantities[0]);
-
-    //     // create a new row with the product data
-    //     var $rowClone = $('.table .tr_clone').first().append().clone();
-
-    //     if (uniqueProducts[productId].unitNames.length >= 2) {
-    //       console.log("entered if");
-    //       $rowClone.find('#unit').val(productData.unitNames[1]);
-    //       $rowClone.find('#price').val(productData.prices[1]);
-    //       $rowClone.find('#quantity').val(productData.quantities[1]);
-    //       $(' .table .tbody').append($rowClone);
-    //     } else {
-    //       console.log("entered else");
-    //       $rowClone.find('#unit').val("");
-    //       $rowClone.find('#price').val("");
-    //       $rowClone.find('#quantity').val("");
-    //     }
-
-    //     $('#infoModalCenter').modal('show');
-
-    //   });
-    //   $('#closeBtn').click(function () {
-    //     $('#infoModalCenter').modal('hide');
-    //   });
-    // });
 
     $(document).ready(function () {
       $('.card #infoButton').click(function (e) {
@@ -187,17 +189,28 @@
         $(".table #price").val(productData.prices.join(', '));
         $(".table #quantity").val(productData.quantities.join(', '));
         $('#infoModalCenter').modal('show');
-        
+
         $('#closeBtn').click(function () {
-        $('#infoModalCenter').modal('hide');
+          $('#infoModalCenter').modal('hide');
+        });
       });
-    });
-      
+
+      $('.card #deleteButton').on('click', function (event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+        $('#removeModalCenter #delRef').attr('href', href);
+        $('#removeModalCenter').modal('show');
+        $('#cancelButton , #closeButton').on('click', function () {
+          $('#removeModalCenter').modal('hide');
+        });
+      });
+
     });
 
 
 
   </script>
+  <script src="/js/fragments.js"></script>
 
 </body>
 

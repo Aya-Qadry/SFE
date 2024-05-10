@@ -24,12 +24,29 @@ public class Customers{
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id" , referencedColumnName = "user_id", nullable = false )
-    private User user_id ; 
+    private User userid ; 
 
+  
+    public User getUserid() {
+        return userid;
+    }
+
+
+    public void setUserid(User userid) {
+        this.userid = userid;
+    }
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendor_id" , referencedColumnName = "user_id" , nullable = false)
-    private User vendor_id ; 
+    private User vendorid ; 
 
+    public User getVendorid() {
+        return vendorid;
+    }
+
+
+    public void setVendorid(User vendorid) {
+        this.vendorid = vendorid;
+    }
     @Id
     @Column(name = "customer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,13 +75,6 @@ public class Customers{
         this.gender = user.getGender();
     }
    
-
-    public User getUser_id() {
-        return user_id;
-    }
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
-    }
     public String getFirstname() {
         return firstname;
     }
@@ -114,11 +124,6 @@ public class Customers{
     public void setCustomer_id(int customer_id) {
         this.customer_id = customer_id;
     }
-    public User getVendor_id() {
-        return vendor_id;
-    }
-    public void setVendor_id(User vendor_id) {
-        this.vendor_id = vendor_id;
-    }
+  
 
 }

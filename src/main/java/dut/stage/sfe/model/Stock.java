@@ -18,7 +18,7 @@ public class Stock {
     private int product_id;
 
     public int getProduct_id() {
-        return product_id;
+        return product_id; 
     }
 
     public void setProduct_id(int product_id) {

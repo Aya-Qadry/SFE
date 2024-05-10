@@ -1,0 +1,122 @@
+
+.search-box {
+    position: absolute;
+    width: 270px;
+    right: 0px;
+    top: 10px;
+    padding-right: 100px;
+    height: 80px;
+}
+
+.search-box .searchB {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 75px;
+    height: 70px;
+    background: #f68f00;
+    border-radius: 50%;
+    transition: all 1s;
+    z-index: 4;
+}
+
+.search-box .searchB:hover {
+    cursor: pointer;
+}
+
+.search-box .searchB::before {
+    content: "";
+    position: absolute;
+    margin: auto;
+    top: 22px;
+    right: 0;
+    bottom: 0;
+    left: 22px;
+    width: 12px;
+    height: 2px;
+    background: white;
+    transform: rotate(45deg);
+    transition: all 0.5s;
+}
+
+.search-box .searchB::after {
+    content: "";
+    position: absolute;
+    margin: auto;
+    top: -5px;
+    right: 0;
+    bottom: 0;
+    left: -5px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid white;
+    transition: all 0.5s;
+
+}
+
+.search-box input {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 50px;
+    outline: none;
+    border: none;
+    background: rgb(246, 238, 224);
+    color: black;
+    padding: 0 80px 0 20px;
+    border-radius: 30px;
+    transition: all 1s;
+    opacity: 0;
+    z-index: 5;
+    font-weight: bolder;
+    letter-spacing: 0.1em;
+}
+
+.search-box input:hover {
+    cursor: pointer;
+}
+
+.search-box input:focus {
+    width: 255px;
+    opacity: 1;
+    cursor: text;
+
+}
+
+.search-box input:focus~.searchB {
+    right: -180px;
+    background: #f68f00;
+    z-index: 6;
+
+}
+
+.search-box input:focus~.searchB::before {
+    top: 0;
+    left: 0;
+    width: 25px;
+}
+
+.search-box input:focus~.searchB::after {
+    top: 0;
+    left: 0;
+    width: 25px;
+    height: 2px;
+    border: none;
+    background: white;
+    border-radius: 0%;
+    transform: rotate(-45deg);
+}
+
+.search-box input::placeholder {
+    color: white;
+    opacity: 0.3;
+    font-weight: bold;
+}

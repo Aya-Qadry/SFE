@@ -16,97 +16,125 @@
     </div>
   </footer>
 
-  <div class="content" th:fragment="nav">
+  <div class="content" th:fragment="nav ">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <div class="container-fluid">
-        <img src="/images/Vertical-logo.png" alt="" width="215" height="60" class="d-inline-block align-text-top">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">----</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">----</a>
-            </li>
-          </ul>
-          <form th:action="@{/do_logout}" method="post" class="d-flex">
+      <div class="container-fluid ">
+        <div id="main" class="main">
+          <button class="openbtn" onclick="toggleNav()"><i class="fas fa-bars"></i></button>
+        </div>
+
+        <a th:href="@{/adminhome/user/dashboard}" id="logo">
+          <img src="/images/hori-logo.png" alt="" width="" height="45px" class="d-inline-block align-text-top"
+            style="padding-top: 0px; margin-bottom: 8px;">
+        </a>
+        <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> -->
+
+        <div th:if="${search}">
+          <div class="search-box">
+            <input type="text" name="search" id="search" size="50" class="search-txt" placeholder="Seacrh ..." />
+            <div class="searchB"></div>
+          </div>
+        </div>
+        <!-- <form th:action="@{/do_logout}" method="post" class="d-flex">
             <button class="btn btn-outline-success" type="submit" value="logout"
               style="margin-right: 10px;">Logout</button>
           </form>
-          <a th:href="@{/adminhome/user/settings}"><i class="far fa-user-circle fa-lg" style="color: #5f665c;"></i></a>
-        </div>
+          <a th:href="@{/adminhome/user/settings}"><i class="far fa-user-circle fa-lg" style="color: #5f665c;"></i></a> -->
+        <!-- </div> -->
       </div>
     </nav>
+
+
   </div>
 
   <div th:fragment="menu">
-    <div class="sidebar" id="side_nave">
-      <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between">
-        <!-- <h1 class="fs-4" th:text="${#authentication.principal.getUser().getUsername()}">Hello </h1> -->
-        <!-- <button class="btn d-mb-none d-block close-btn px-1 py-0 text-white"><i class="fal fa-stream"></i></button> -->
-      </div>
+
+    <nav class="sidebar" id="side_nave">
+      <!-- <div class="header-box px-2 pt-3 pb-4 d-flex justify-content-between"> -->
+      <a href="#" class="closebtn" onclick="toggleNav()"><i class="fas fa-times"></i></a>
+      <!-- </div> -->
 
       <ul class="list-unstyled px-2">
-        <li class="active"><a th:href="@{/adminhome/user/dashboard}" class="text-decoration-none px-3 py-2 d-block"><i class="fas fa-home"></i>
-            Home</a></li>
 
-        <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-user-tag"></i>
-            Vendors</a>
-          <ul class="sub-menu" style="list-style: none ;">
-            <li><a th:href="@{/adminhome/list}" class="text-decoration-none px-3 py-2 d-block"><i
-                  class="fal fa-list-ul"></i> Show list of vendors</a></li>
-            <li><a th:href="@{/adminhome/vendorform}" class="text-decoration-none px-3 py-2 d-block"><i
-                  class="fal fa-plus"></i> Add a vendor</a></li>
-          </ul>
+        <li class="">
+          <a th:href="@{/adminhome/user/dashboard}" class="nav_link   text-decoration-none px-3 py-2 d-block"><i
+              class="far fa-home"></i> Home</a>
         </li>
 
-        <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-apple-alt"></i>
-            Products</a>
-          <ul class="sub-menu" style="list-style: none ;">
-            <li><a th:href="@{/adminhome/products/categories}" class="text-decoration-none px-3 py-2 d-block"><i
-                  class="fal fa-table"></i> Product categories </a></li>
-            <li><a th:href="@{/adminhome/products/listproducts}" class="text-decoration-none px-3 py-2 d-block"><i
-                  class="fal fa-list-ul"></i> Show list of products </a></li>
-            <li><a th:href="@{/adminhome/products/addproduct}" class="text-decoration-none px-3 py-2 d-block"><i
-                  class="far fa-plus"></i> Add a product </a></li>
-          </ul>
-        </li>
-
-        <li class=""><a th:href="@{/adminhome/orders/listorders}" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-boxes"></i> Orders</a>
-        </li>
-
-        <li class=""><a th:href="@{/adminhome/requests}" class="text-decoration-none px-3 py-2 d-block"><i
-              class="fal fa-folder-open"></i> Requests</a></li>
-
-        <li class=""><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-users"></i> Users</a>
-          <ul class="sub-menu" style="list-style: none ;">
-            <li><a th:href="@{/adminhome/users/listusers}" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-list-ul"></i> Show list of users</a></li>
-            <li><a th:href="@{/adminhome/users/addUser}" class="text-decoration-none px-3 py-2 d-block"><i class="fal fa-plus"></i> Add a user</a>
+        <li class="nav-item has-submenu"><a href="#" class="nav_link text-decoration-none px-3 py-2 d-block"><i
+              class="far fa-users"></i> Users<i class="fas fa-chevron-down" name="collapse_link" id="chevron"></i></a>
+          <ul class="submenu collapse" style="list-style: none ;">
+            <li class=""><a th:href="@{/adminhome/users/listusers}"
+                class="nav_link text-decoration-none px-3 py-2 d-block"><i class="fal fa-list-ul"></i> Show list of
+                users</a>
+            </li>
+            <li class=""><a th:href="@{/adminhome/list}" class="nav_link text-decoration-none px-3 py-2 d-block"><i
+                  class="far fa-user-tag"></i>Vendors</a></li>
+            <li class=""><a th:href="@{/adminhome/users/addUser}"
+                class="nav_link text-decoration-none px-3 py-2 d-block"><i class="fal fa-plus"></i> Add a user</a>
             </li>
           </ul>
         </li>
 
-        <li><a href="#" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-cogs"></i> Configuration</a>
-          <ul class="sub-menu" style="list-style: none;">
-            <li><a th:href="@{/adminhome/configuration/listoptions}" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-truck"></i> Shipping options</a></li>
-            <li><a th:href="@{/adminhome/configuration/listunits}" class="text-decoration-none px-3 py-2 d-block"><i
-                  class="far fa-weight-hanging"></i> Mesurement units</a></li>
+        <li class="nav-item has-submenu"><a href="#" class="nav_link text-decoration-none px-3 py-2 d-block"><i
+              class="far fa-apple-alt"></i> Products <i class="fas fa-chevron-down" name="collapse_link"
+              id="chevron"></i></a>
+          <ul class="submenu collapse" style=" list-style: none ;">
+            <li class=""><a th:href="@{/adminhome/products/categories}"
+                class="nav_link text-decoration-none px-3 py-2 d-block"><i class="fal fa-table"></i> Product categories
+              </a></li>
+            <li class=""><a th:href="@{/adminhome/products/listproducts}"
+                class="nav_link text-decoration-none px-3 py-2 d-block"><i class="fal fa-list-ul"></i> Show list of
+                products </a>
+            </li>
+            <li class=""><a th:href="@{/adminhome/products/addproduct}"
+                class="nav_link text-decoration-none px-3 py-2 d-block"><i class="far fa-plus"></i> Add a product </a>
+            </li>
           </ul>
         </li>
 
-        <li><a th:href="@{/adminhome/stock/showstock}" class="text-decoration-none px-3 py-2 d-block"><i class="far fa-inventory"></i> Stock management</a></li>
+        <li class=""><a th:href="@{/adminhome/orders/listorders}"
+            class="nav_link text-decoration-none px-3 py-2 d-block"><i class="fal fa-boxes"></i> Orders</a>
+        </li>
+
+        <li class=""><a th:href="@{/adminhome/requests}" class="nav_link text-decoration-none px-3 py-2 d-block"><i
+              class="fal fa-folder-open"></i> Requests</a>
+        </li>
+
+        <li class="nav-item has-submenu"><a href="#" class="nav_link text-decoration-none px-3 py-2 d-block"><i
+              class="far fa-cogs"></i> Configuration <i class="fas fa-chevron-down" name="collapse_link"
+              id="chevron"></i></a>
+          <ul class="submenu collapse" style="list-style: none;">
+            <li class=""><a th:href="@{/adminhome/configuration/listoptions}"
+                class="nav_link text-decoration-none px-3 py-2 d-block"><i class="far fa-truck"></i> Shipping
+                options</a></li>
+            <li class=""><a th:href="@{/adminhome/configuration/listunits}"
+                class="nav_link text-decoration-none px-3 py-2 d-block"><i class="far fa-weight-hanging"></i> Mesurement
+                units</a></li>
+          </ul>
+        </li>
+
+        <li class=""><a th:href="@{/adminhome/stock/showstock}"
+            class="nav_link text-decoration-none px-3 py-2 d-block"><i class="far fa-inventory"></i> Stock
+            management</a>
+        </li>
+
+        <li id="settings">
+          <a th:href="@{/adminhome/user/settings}" class="nav_link text-decoration-none px-3 py-2 d-block" style="cursor: pointer;">
+            <i class="far fa-user-circle fa-lg"></i> Settings</a>
+        </li>
+        <li id="bottom" class="">
+          <a class="nav_link text-decoration-none px-3 py-2 d-block" style="cursor: pointer;"> 
+            <form th:action="@{/do_logout}" method="post" class="d-flex">
+              <button style="all: unset; cursor: pointer;" type="submit" value="logout"><i class="far fa-sign-out-alt fa-rotate-180"></i> Logout</button>
+            </form>
+          </a>
+        </li>
 
       </ul>
 
-      <hr class="h-color mx-3 ">
+    </nav>
 
-      <ul class="list-untyled px-2 ">
-      </ul>
-    </div>
   </div>
 
 </body>

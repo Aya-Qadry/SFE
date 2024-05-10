@@ -1,0 +1,134 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+table {
+    width: auto;
+    border-collapse: initial !important;
+    border-spacing: 0 1em;
+}
+
+.idCol {
+    font-weight: bolder;
+    color: rgb(88, 86, 86);
+}
+
+.tbl th {
+    background-color: #9dc08c;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: center;
+    padding: 20px;
+}
+
+thead tr th:first-child {
+    border-top-left-radius: 11px;
+    border-bottom-left-radius: 11px;
+
+}
+
+thead tr th:last-child {
+    border-top-right-radius: 11px;
+    border-bottom-right-radius: 11px;
+
+}
+
+.tbl td {
+    padding: 22px 25px;
+}
+
+.tbl td:first-child {
+    border-top-left-radius: 11px;
+    border-bottom-left-radius: 10px;
+
+}
+
+.tbl td:last-child {
+    border-top-right-radius: 11px;
+    border-bottom-right-radius: 10px;
+
+}
+
+.tbl tr {
+    border: 1px solid black !important;
+
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fbf7f1;
+
+}
+
+tbody tr:nth-child(odd) {
+    background-color: rgba(0, 0, 0, .025);
+
+}
+
+@media all and (max-width: 767px) {
+    .tbl td {
+        display: none;
+    }
+
+    .tbl td:before {
+        color: #6C7A89;
+        padding-right: 10px;
+        content: attr(data-label);
+        flex-basis: 50%;
+        text-align: right;
+    }
+}
+
+.entireTbl {
+    width: max-content;
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    /* box-shadow: 2px 2px 2px 2px #ccd4cc !important; */
+
+    margin-bottom: 50px;
+}
+
+.page-link {
+    text-decoration: none;
+    color: #37a136;
+    font-weight: 500;
+}
+
+.page-link:hover {
+    text-decoration: none;
+    color: #37a136;
+
+}
+
+.top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 3px;
+}
+
+.top .btn {
+    color: rgb(122, 121, 121);
+    width: fit-content;
+    border-color: #9dc08c;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    border-width: 3px;
+}
+
+.top .btn:hover {
+    background-color: #9dc08c;
+    color: black;
+    border-color: #9dc08c;
+}
+
+h4 {
+    margin: 0;
+}

@@ -21,25 +21,19 @@ public class LoginSuccess extends SavedRequestAwareAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
             Authentication authentication) throws ServletException, IOException {
         // TODO Auto-generated method stub
-//  
         //In the case of an authentication request with username and password, this would be the username. 
         MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal() ; 
-            
+             
         String redirecturl = request.getContextPath();
         
         if(userDetails.getAuthorities().toString().contains("ADMIN")){
-            System.out.println("admin");
-            redirecturl = "/adminhome/user/dashboard";
+             redirecturl = "/adminhome/user/dashboard";
         }else if(userDetails.getAuthorities().toString().contains("VENDOR")){
             redirecturl = "/vendorhome";
-            System.out.println("vendor");
-        }else if(userDetails.getAuthorities().toString().contains("CUSTOMER")){
+         }else if(userDetails.getAuthorities().toString().contains("CUSTOMER")){
             redirecturl = "/customer";
-        }
-        System.out.println("+++++++++++++++++3222"+userDetails.getAuthorities());
-        System.out.println("++++++++++++++++'''+3222"+userDetails.getAuthorities().toString());
-
-        // super.onAuthenticationSuccess(request, response, authentication);
+        } 
+ 
         response.sendRedirect(redirecturl);
     }
     

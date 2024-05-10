@@ -63,14 +63,7 @@ main {
 .card p {
     inset: auto auto 80px 30px;
 }
-/* .card .h6{
-    position: absolute;
-    opacity: 0;
-    max-width: 80%;
-    transition: opacity 0.4s ease-out;
-    inset: auto auto 82px 30px;
 
-} */
 .card a {
     inset: auto auto 40px 30px;
     color: inherit;
@@ -83,7 +76,7 @@ main {
     transition: inset 0.3s ease-out;
 }
 
-.card:hover p,
+.card:hover p, 
 .card:hover a {
     opacity: 1;
     transition: opacity 0.5s 0.1s ease-in;
@@ -94,7 +87,23 @@ main {
     opacity: 1;
 }
 
-.material-symbols-outlined {
-    vertical-align: middle;
+.button-group {
+    display: flex;
 }
 
+.button-group #deleteButton {
+    margin-left: 200px;
+}
+
+.button-group #infoButton {
+    margin-left: 5px;
+}
+.grid-container {
+    display: grid; 
+    align-content: stretch;
+    justify-content: center;
+    padding: 20px;
+}
+#grid-item {
+    margin: 10px;
+}

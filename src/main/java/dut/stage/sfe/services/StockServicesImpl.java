@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dut.stage.sfe.dao.StockRepository;
+import dut.stage.sfe.model.Product;
 import dut.stage.sfe.model.Stock;
 
 @Service
@@ -38,6 +39,16 @@ public class StockServicesImpl implements StockServices{
     @Override
     public void saveAllToStcok() {
        repository.saveAll(null);
+    }
+
+    @Override
+    public void deleteByProduct(Product product) {
+        repository.deleteByProduct(product);
+    }
+
+    @Override
+    public Stock findByProduct(Product product) {
+        return repository.findByProduct(product);
     }
     
 }

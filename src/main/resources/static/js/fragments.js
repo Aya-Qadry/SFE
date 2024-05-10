@@ -1,43 +1,78 @@
-   
-  //   var sidebarList = document.querySelectorAll('.sidebar ul li');
-  //   sidebarList.forEach(item => {
-  //   item.addEventListener('click', function() {
-  //   const activeItem = document.querySelector('.sidebar ul li.active');
-  //   activeItem.classList.remove('active');
-  //   this.classList.add('active');
-  //   // console.log("click");
-  // });
-  // });
+// function openNav() {
+//   const nav = document.getElementById('side_nave');
+//   const main = document.getElementById('main');
+//   const container = document.getElementById("container-fluid");
 
-  // var subMenus = document.querySelectorAll('.sub-menu');
-  
-  // // Loop through each sub-menu element
-  // for (var i = 0; i < subMenus.length; i++) {
-  //   subMenus[i].style.display = 'none';
-    
-  //   subMenus[i].previousElementSibling.addEventListener('click', function(e) {
-  //     //prevent the default link behavior
-  //     e.preventDefault();
-  //     // toggle
-  //     if (this.nextElementSibling.style.display === 'none') {
-  //       this.nextElementSibling.style.display = 'block';
-  //     } else {
-  //       this.nextElementSibling.style.display = 'none';
-  //     }
-  //   });
-  // }
+//   const navStyle = window.getComputedStyle(nav);
+//   const navWidth = navStyle.width;
 
-  let arrow = document.querySelectorAll(".arrow");
-  for (var i = 0; i < arrow.length; i++) {
-    arrow[i].addEventListener("click", (e)=>{
-   let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
-   arrowParent.classList.toggle("showMenu");
-    });
+//   if (nav.style.width != '0px') {
+//     nav.style.width = '0px';
+//     main.style.marginLeft = '0';
+//     container.style.marginLeft = '0';
+//   } else {
+//     document.getElementById('side_nave').style.width = '310px';
+//     document.getElementById('main').style.marginLeft = '310px';
+//     document.getElementById('container-fluid').style.marginLeft = '310px';
+//   }
+
+// }
+function toggleNav() {
+  const nav = document.getElementById('side_nave');
+  const main = document.getElementById('main');
+  const container = document.getElementById("container-fluid");
+
+  if (nav.style.width === '0px' || nav.style.width === '') {
+    nav.style.width = '310px';
+    main.style.marginLeft = '310px';
+    container.style.marginLeft = '310px';
+  } else {
+    nav.style.width = '0px';
+    main.style.marginLeft = '0';
+    container.style.marginLeft = '0';
   }
-  let sidebar = document.querySelector(".sidebar");
-  let sidebarBtn = document.querySelector("#side");
-  console.log(sidebarBtn);
-  sidebarBtn.addEventListener("click", ()=>{
-    sidebar.classList.toggle("close");
+}
+
+// function closeNav() {
+//   const nav = document.getElementById('side_nave');
+//   const main = document.getElementById('main');
+//   const container = document.getElementById("container-fluid");
+//   nav.style.width = '0px';
+//   main.style.marginLeft = '0';
+//   container.style.marginLeft = '0';
+// }
+
+
+var linkColor = document.querySelectorAll('.nav_link');
+
+function colorLink() {
+
+  var parentLi = this.closest('li');
+  linkColor.forEach(l => {
+    parentLi.classList.add('active');
+
+    l.classList.remove('active');
+
   });
+
+}
+linkColor.forEach(l => l.addEventListener('click', colorLink)); 
+
+var collapseLinks = document.querySelectorAll('i[name="collapse_link"]');
+collapseLinks.forEach(link => {
+  link.addEventListener('click', function() {
+    var collapseMenu = this.parentElement.nextElementSibling;
+    collapseMenu.classList.toggle('showCollapse');
+
+    var rotate = this;
+    rotate.classList.toggle('rotate');
+  });
+});
+
+var linkColor = document.querySelectorAll('.nav_link')
+function colorLink(){
+  linkColor.forEach(l=> l.classList.remove('active'))
+  this.classList.add('active')
+}
+linkColor.forEach(l=> l.addEventListener('click', colorLink))
 

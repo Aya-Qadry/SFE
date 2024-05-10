@@ -1,15 +1,14 @@
 package dut.stage.sfe.controllers;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import dut.stage.sfe.dao.OrderProductRepository;
@@ -28,14 +27,38 @@ public class OrderController {
     @Autowired
     OrderProductServicesImpl orderProductServicesImpl;
     @Autowired
-    OrderRepository repo; 
+    OrderRepository repo;
     @Autowired
-    OrderProductRepository oRepository ; 
+    OrderProductRepository oRepository;
+
     @GetMapping("/listorders")
-    public String getOrders(Model model) {
-        model.addAttribute("orderlist", orderServicesImpl.findAllOrders());
+    public String getTable(Model model) {
+        return getOnePage(model, 1);
+    }
+
+    @GetMapping("/listorders/{pageNumber}")
+    public String getOnePage(Model model, @PathVariable("pageNumber") int currentPage) { 
+
+        Page<Order> page = orderServicesImpl.findPage(currentPage);
+        int totalPages = page.getTotalPages();
+        // total number of all the items in the table
+        Long totalItems = page.getTotalElements();
+        List<Order> orders = page.getContent();
+
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("orderlist", orders);
         return "orders";
     }
+
+    @GetMapping("/search")
+    @ResponseBody
+    public List<Order> searchOrder(@RequestParam("query") String query) {
+        List<Order> filteredData = orderServicesImpl.searchOrders(query);
+        return filteredData;
+    }
+
 
     @GetMapping("/deleteOrder/{id}")
     public String deleteOrder(@PathVariable("id") int id) {
@@ -44,16 +67,14 @@ public class OrderController {
         return "redirect:/adminhome/orders/listorders";
     }
 
-    @GetMapping("/showOrder/{id}")
+    @GetMapping("/showOrder/{orderId}")
     @ResponseBody
-    public OrderProducts showOrder(@PathVariable("id") int id ) {
-        Order o = orderServicesImpl.findById(id) ;
-        OrderProducts order= oRepository.findByOrder(o);
-        System.out.println("test "+order.getPrice());
-        // List<OrderProducts> products = orderProductServicesImpl.findAllByOrderId(id);
-        // model.addAttribute("products", products );
-        // model.addAttribute("order", order);
-        return order;
+    public List<OrderProducts> showOrder(@PathVariable("orderId") int id) {
+        Order order = orderServicesImpl.findById(id);
+        List<OrderProducts> orderProductsList = oRepository.findByOrder(order);
+        
+        return orderProductsList;
     }
+
 
 }

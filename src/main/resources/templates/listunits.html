@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Measurement Units</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -14,50 +14,84 @@
         crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
 
     <script src="/js/fragments.js"></script>
+    <script src="/js/listunits.js"></script>
+
     <link rel="stylesheet" href="/css/fragments.css">
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/search.css">
 </head>
 
 <body>
-    <div th:replace="fragments :: nav"></div>
+    <div th:replace="~{fragments :: nav(search=true)}"></div>
 
     <div class="main-container d-flex">
+        <div class="preloader flex-column justify-content-center align-items-center" style="background-color: white;">
+            <img class="animation" src="/images/Horizonal-A-Logo.jpg" alt="AvonFruitsLogo" height="30%" width="50%">
+        </div>
         <div th:replace="fragments :: menu"></div>
 
-        <div class="container">
-            <h5>List of units</h5>
-            <a class="btn btn-outline-success" id="showModal" style="margin: 10px;" href="#addModal" data-toggle="modal"
-                data-target="#addModal">+ Add a unit</a>
+        <div class="container-fluid" id="container-fluid">
+            <div align="center" class=" entireTbl" style="overflow: auto;">
 
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Unit</th>
-                        <th>Abbreviation</th>
-                        <th>Created at</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="unit : ${unitslist}">
-                        <td hidden th:text="${unit.unit_id}"></td>
-                        <td th:text="${unit.name}" id="name"></td>
-                        <td th:text="${unit.abbreviation}" id="abbreviation"></td>
-                        <td th:text="${unit.date}" id="date"></td>
-                        <td>
-                            <a th:href="@{/adminhome/configuration/deleteUnit/{id}(id=${unit.unit_id})}"
-                                id="deleteButton" class="btn" style="padding: 0;">
-                                <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
+                <div class="top">
+                    <h4>Measurement units table</h4>
+                    <a class="btn btn-outline-success" id="showModal" style="margin: 10px;" href="#addModal"
+                        data-toggle="modal" data-target="#addModal">+ Add a new unit</a>
+                </div>
+                <table class="tbl" id="unitsTable">
+                    <thead>
+                        <tr>
+                            <th>Unit</th>
+                            <th>Abbreviation</th>
+                            <th>Created at</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        <tr th:each="unit : ${unitslist}">
+                            <td hidden th:text="${unit.unit_id}"></td>
+                            <td th:text="${unit.name}" id="name"></td>
+                            <td th:text="${unit.abbreviation}" id="abbreviation"></td>
+                            <td th:text="${#temporals.format(unit.date, 'MMMM d, yyyy HH:mm')}" id="date"></td>
+                            <td>
+                                <a th:href="@{/adminhome/configuration/deleteUnit/{id}(id=${unit.unit_id})}"
+                                    id="deleteButton" class="btn" style="padding: 0;"
+                                    th:attr="data-unit-id=${unit.unit_id}">
+                                    <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
 
-                            <a th:href="@{/adminhome/configuration/editUnit/{id}(id=${unit.unit_id})}" class="btn"
-                                id="editButton" style="padding: 0;">
-                                <i class="fal fa-edit" style="color: rgb(76, 136, 192);"></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                                <a th:href="@{/adminhome/configuration/editUnit/{id}(id=${unit.unit_id})}" class="btn"
+                                    id="editButton" style="padding: 0;">
+                                    <i class="fal fa-edit" style="color:#37a136;"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="card-footer ">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        Total Items [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
+                        &nbsp; &nbsp
+                    </ul>
+                    <ul class="pagination pagination-sm m-0 float-left"
+                        th:each="i: ${#numbers.sequence(1, totalPages)}">
+
+                        <!-- <li class="page-item"><a class="page-link" href="#">«</a></li> -->
+                        <li class="page-item"><a class="page-link" th:href="@{'/adminhome/listunits/' + ${i}}">[[${i}]]</a>
+                        </li>
+                        <!-- <li class="page-item"><a class="page-link" href="#">»</a></li> -->
+                        &nbsp; &nbsp;
+                    </ul>
+                </div>
+                <!-- End pagination -->
+            </div>
 
             <!-- Delete Modal -->
             <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog"
@@ -72,6 +106,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <p id="error" class="text-danger"></p>
                             <p class="alert alert-danger">
                                 Are You sure You want to delete this unit?
                             </p>
@@ -84,9 +119,10 @@
                     </div>
                 </div>
             </div>
+            <!-- End -->
 
             <!-- Update Modal -->
-            <form th:action="@{/adminhome/configuration/saveUnit}" method="post">
+            <form th:action="@{/adminhome/configuration/saveUnit}" method="post" id="updateform">
                 <div class="modal fade" id="editModalCenter" tabindex="-1" role="dialog"
                     aria-labelledby="editModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -109,12 +145,17 @@
                                             <tr>
                                                 <th>Name</th>
                                                 <td><input type="text" class="form-control" id="name" name="name"
-                                                        value=""></td>
+                                                        required value="">
+                                                    <p class="text-danger"></p>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <th>Abbreviation</th>
                                                 <td><input type="text" class="form-control" id="abbreviation"
-                                                        name="abbreviation" value=""></td>
+                                                        name="abbreviation" value="" required>
+                                                    <p class="text-danger"></p>
+
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -127,10 +168,11 @@
                     </div>
                 </div>
             </form>
+            <!-- End -->
 
             <!-- Add Modal -->
             <div class="l">
-                <form th:action="@{/adminhome/configuration/saveUnit}" method="post">
+                <form th:action="@{/adminhome/configuration/saveUnit}" method="post" id="addform">
                     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal"
                         aria-hidden="true">
 
@@ -149,13 +191,18 @@
                                             <tr>
                                                 <th>Unit's name</th>
                                                 <td>
-                                                    <input type="text" id="name" class="form-control form-control-lg" autofocus name="name" />
+                                                    <input type="text" id="name" class="form-control form-control-lg"
+                                                        autofocus name="name" required />
+                                                    <p class="text-danger"></p>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <th>Abbreviation</th>
                                                 <td>
-                                                    <input type="text" id="abbreviation" class="form-control form-control-lg" autofocus name="abbreviation" />
+                                                    <input type="text" id="abbreviation"
+                                                        class="form-control form-control-lg" autofocus
+                                                        name="abbreviation" required />
+                                                    <p class="text-danger"></p>
                                                 </td>
                                             </tr>
                                         </table>
@@ -171,48 +218,14 @@
                     </div>
                 </form>
             </div>
+            <!-- End -->
 
         </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
+    <script src="/js/listunits.js"></script>
+    <script src="/js/fragments.js"></script>
 
-            $('.table #editButton').click(function (e) {
-                e.preventDefault();
-                var href = '';
-                href = $(this).attr('href');
-                // $("#infoButton").attr('href',href);
-                $.get(href, function (unit, status) {
-                    $('#editModalCenter #name').val(unit.name);
-                    $('#editModalCenter #unit_id').val(unit.unit_id);
-                    $('#editModalCenter #abbreviation').val(unit.abbreviation);
-                });
-                $('#editModalCenter').modal('show');
-                $('#closeBtn').click(function () {
-                    $('#editModalCenter').modal('hide');
-                });
-            });
-
-            $('.table #deleteButton').on('click', function (event) {
-                event.preventDefault();
-                var href = $(this).attr('href');
-                $('#removeModalCenter #delRef').attr('href', href);
-                $('#removeModalCenter').modal('show');
-                $('#cancelButton , #closeButton').on('click', function () {
-                    $('#removeModalCenter').modal('hide');
-                });
-            });
-            $("#showModal").click(function(e) {
-            e.preventDefault();
-            $("#addModal").modal('show');
-                $('#closeButton , #cancelButton').on('click' ,function(e){
-                    $("#addModal").modal('hide');
-                });
-            });
-
-        });
-    </script>
 </body>
 
 </html>

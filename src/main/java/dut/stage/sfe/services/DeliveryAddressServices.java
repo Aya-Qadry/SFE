@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import dut.stage.sfe.dao.DeliveryAddressRepository;
 import dut.stage.sfe.model.DeliveryAddress;
 import dut.stage.sfe.model.User;
-import dut.stage.sfe.model.Vendor;
 
 public interface DeliveryAddressServices {
     

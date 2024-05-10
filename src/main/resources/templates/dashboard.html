@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -15,16 +15,16 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <script src="/js/fragments.js"></script>
-    <link rel="stylesheet" href="/css/fragments.css">
 
     <!-- <script src="https://unpkg.com/@popperjs/core@2"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+    <link rel="stylesheet" href="/css/fragments.css">
+    <script src="/js/fragments.js"></script>
 
     <style>
         #bounce {
@@ -35,7 +35,15 @@
         .row {
             margin-top: 20px;
         }
+        .row #role{
+            width: 150px;
+        }
+        .row #id{
+            color: grey;
+            font-weight: bolder;
+        }
     </style>
+
 </head>
 
 <body>
@@ -49,11 +57,14 @@
 
         <div th:replace="fragments :: menu"></div>
 
-        <!-- <div class="content-wrapper"> -->
-        <div class="content-header"></div>
-        <!-- <section class="content"> -->
-
-        <div class="container-fluid">
+        <div class="container-fluid" id="container-fluid">
+            <div class="row ">
+                <div class="col-lg-6">
+                    <h3 class="m-1">Dashboard</h3>
+                </div>
+                <div class="col-lg-6">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-info">
@@ -109,58 +120,289 @@
                     </div>
                 </div>
             </div>
+            <div class="row " style="margin-bottom: 0%;">
+                <div class="col-lg-6">
+                    <div class="card card-danger">
+                        <div class="card-header" style="background-color: #006249;">
+                            <h3 class="card-title">Product categories domination in %</h3>
 
-            <div class="col-lg-6" style="padding-left: 0%;">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Users</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chartjs-size-monitor">
+                                <div class="chartjs-size-monitor-expand">
+                                    <div class=""></div>
+                                </div>
+                                <div class="chartjs-size-monitor-shrink">
+                                    <div class=""></div>
+                                </div>
+                            </div>
+                            <canvas id="donutChart"
+                                style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 419px;"
+                                width="419" height="250" class="chartjs-render-monitor"></canvas>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>Full name</th>
-                                    <th>Creation date</th>
-                                    <th style="width: 40px">Role</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="user : ${listusers}">
-                                    <td th:text="${user.user_id}"></td>
-                                    <td th:text="${user.firstname+' '+user.lastname}"></td>
-                                    <td th:text="${{user.date}}"></td>
-                                    <td th:text="${user.roles}"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header" style="background-color: #17a2b8; color: white;">
+                            <h3 class="card-title">Orders & Customers Chart</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart">
+                                <div class="chartjs-size-monitor">
+                                    <div class="chartjs-size-monitor-expand">
+                                        <div class=""></div>
+                                    </div>
+                                    <div class="chartjs-size-monitor-shrink">
+                                        <div class=""></div>
+                                    </div>
+                                </div>
+                                <canvas id="comparaisonChart"
+                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 549px;"
+                                    width="549" height="400" class="chartjs-render-monitor"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Pagination -->
-                    <div class="card-footer ">
-                        <ul class="pagination pagination-sm m-0 float-right">
-                            Total Items [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
-                            &nbsp; &nbsp 
-                        </ul>
-                        <ul class="pagination pagination-sm m-0 float-left" th:each="i: ${#numbers.sequence(1, totalPages)}">
-                            
-                            <!-- <li class="page-item"><a class="page-link" href="#">«</a></li> -->
-                            <li class="page-item"><a class="page-link"
-                                    th:href="@{'/adminhome/user/dashboard/' + ${i}}">[[${i}]]</a></li>
-                            <!-- <li class="page-item"><a class="page-link" href="#">»</a></li> -->
-                            &nbsp; &nbsp;
-
-                        </ul>
-                    </div> 
-                    <!-- End pagination -->
-
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-header" style="background-color:#dc3545; color: white;">
+                            <h3 class="card-title">Users</h3>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered" id="usersTable">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10px">#</th>
+                                        <th>Full name</th>
+                                        <th>Creation date</th>
+                                        <th style="width: 40px">Role</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="user : ${listusers}">
+                                        <td th:text="${user.user_id}" id="id"></td>
+                                        <td th:text="${user.firstname+' '+user.lastname}"></td>
+                                        <td th:text="${{user.date}}"></td>
+                                        <td th:text="${user.roles}" id="role"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- Pagination -->
+                        <div class="card-footer ">
+                            <ul class="pagination pagination-sm m-0 float-right">
+                                Total Items [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
+                                &nbsp; &nbsp
+                            </ul>
+                            <ul class="pagination pagination-sm m-0 float-left"
+                                th:each="i: ${#numbers.sequence(1, totalPages)}">
 
+                                <!-- <li class="page-item"><a class="page-link" href="#">«</a></li> -->
+                                <li class="page-item"><a class="page-link"
+                                        th:href="@{'/adminhome/user/dashboard/' + ${i}}">[[${i}]]</a></li>
+                                <!-- <li class="page-item"><a class="page-link" href="#">»</a></li> -->
+                                &nbsp; &nbsp;
+
+                            </ul>
+                        </div>
+                        <!-- End pagination -->
+
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <!-- </section> -->
-        <!-- </div> -->
     </div>
+    <script src="/js/fragments.js"></script>
+
+    <script th:inline="javascript">
+
+        // console.log(navigator);
+        if (typeof let === "undefined") {
+  console.log("Using ES5 or earlier version of JavaScript");
+} else {
+  console.log("Using ES6 or later version of JavaScript");
+}
+        var ordersData = /*[[${ordersData}]]*/[];
+        var customersData = /*[[${customersData}]]*/[];
+        var months = /*[[${months}]]*/[];
+
+        // Get context with jQuery - using jQuery's .get() method.
+        var areaChartCanvas = $('#comparaisonChart').get(0).getContext('2d')
+
+        var areaChartData = {
+            labels: months,
+            datasets: [
+                {
+                    label: 'Orders',
+                    backgroundColor: 'rgba(60,141,188,0.9)',
+                    borderColor: 'rgba(60,141,188,0.8)',
+                    pointRadius: false,
+                    pointColor: '#3b8bba',
+                    pointStrokeColor: 'rgba(60,141,188,1)',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(60,141,188,1)',
+                    data: ordersData
+                },
+                {
+                    label: 'Customers',
+                    backgroundColor: 'rgba(210, 214, 222, 1)',
+                    borderColor: 'rgba(210, 214, 222, 1)',
+                    pointRadius: false,
+                    pointColor: 'rgba(210, 214, 222, 1)',
+                    pointStrokeColor: '#c1c7d1',
+                    pointHighlightFill: '#fff',
+                    pointHighlightStroke: 'rgba(220,220,220,1)',
+                    data: customersData
+                },
+            ]
+        }
+
+        var areaChartOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+            legend: {
+                display: true,
+                position: 'top', // Display legend on top
+                labels: {
+                    usePointStyle: true, // Use point style for legend
+                }
+            },
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        display: false,
+                    }
+                }],
+                yAxes: [{
+                    gridLines: {
+                        display: false,
+                    }
+                }]
+            }
+        };
+
+        new Chart(areaChartCanvas, {
+            type: 'line',
+            data: areaChartData,
+            options: areaChartOptions
+        });
+
+
+        //- DONUT CHART - 
+        var donutChartCanvas = $('#donutChart').get(0).getContext('2d');
+        var donutData = {
+            labels: [],
+            datasets: [
+                {
+                    data: [],
+                    backgroundColor: [],
+                }
+            ]
+        };
+        var donutOptions = {
+            maintainAspectRatio: false,
+            responsive: true,
+        };
+
+        // Replace the following line with the data retrieved from the server
+        var productCategoryPercentages = /*[[${productCategoryPercentages}]]*/[];
+
+        // Populate the donutData object with category names and percentages
+        for (var category in productCategoryPercentages) {
+            donutData.labels.push(category);
+            donutData.datasets[0].data.push(productCategoryPercentages[category]);
+            donutData.datasets[0].backgroundColor.push(getRandomColor()); // Random color for each category
+        }
+
+        // Create the donut chart
+        new Chart(donutChartCanvas, {
+            type: 'doughnut',
+            data: donutData,
+            options: donutOptions
+        });
+
+
+        var previousColor = '';
+
+        function getRandomColor() {
+            var colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
+
+            var randomIndex = Math.floor(Math.random() * colors.length);
+            var color = colors[randomIndex];
+
+            // Check if the color is the same as the previous color
+            if (color === previousColor) {
+                // Generate a new random index until a different color is obtained
+                while (color === previousColor) {
+                    randomIndex = Math.floor(Math.random() * colors.length);
+                    color = colors[randomIndex];
+                }
+            }
+
+            // Store the current color as the previous color
+            previousColor = color;
+
+            return color;
+        }
+
+
+        var table = document.getElementById("usersTable");
+        for (var i = 0; i < table.rows.length; i++) {
+            var roleElement = table.rows[i].querySelector('#role');
+
+            if (roleElement) {
+                var icon = document.createElement('i');
+                var container = document.createElement("span");
+                var text;
+                var role = roleElement.textContent;
+
+                if (role == "[ADMIN]") {
+                    roleElement.textContent = "";
+                    icon.classList.add("fas", "fa-user-shield");
+                    icon.style.color = '#e60000';
+                    text = document.createTextNode(" Admin");
+                    // roleElement.role = " Admin";
+
+                    container.appendChild(icon);
+                    container.appendChild(text);
+                    roleElement.appendChild(container);
+
+                }
+                if (role == "[VENDOR]") {
+                    roleElement.textContent = "";
+                    icon.classList.add('fas', 'fa-user-tag');
+                    icon.style.color = 'rgb(62, 92, 148)';
+                    text = document.createTextNode(" Vendor");
+                    // roleElement.role = " Vendor";
+
+                    container.appendChild(icon);
+                    container.appendChild(text);
+                    roleElement.appendChild(container);
+
+                }
+                if (role == "[CUSTOMER]") {
+                    roleElement.textContent = "";
+                    icon.classList.add('fas', 'fa-user-tie');
+                    icon.style.color = 'green';
+                    icon.style.marginRight = '8px';
+                    roleElement.setAttribute("data-role", "Customer");
+                    text = document.createTextNode("Customer");
+                    // roleElement.role = " Customer";
+
+                    container.appendChild(icon);
+                    container.appendChild(text);
+                    roleElement.appendChild(container);
+
+                }
+
+            }
+
+        }
+
+    </script>
 
 </body>
 

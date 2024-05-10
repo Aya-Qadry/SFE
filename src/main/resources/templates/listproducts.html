@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Products</title>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -16,50 +16,78 @@
   <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+  <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+
   <script src="/js/fragments.js"></script>
+  <script src="/js/listproducts.js"></script>
+
+  <link rel="stylesheet" href="/css/search.css">
   <link rel="stylesheet" href="/css/fragments.css">
   <link rel="stylesheet" href="/css/listproducts.css">
 
 </head>
 
 <body>
-  <div th:replace="fragments :: nav"></div>
+  <div th:replace="~{fragments :: nav(search=true)}"></div>
 
   <div class="main-container d-flex">
+    <!-- <div class="preloader flex-column justify-content-center align-items-center" style="background-color: white;">
+        <img class="animation" src="/images/Horizonal-A-Logo.jpg" alt="AvonFruitsLogo" height="30%" width="50%">
+      </div> -->
     <div th:replace="fragments :: menu"></div>
 
-    <div class="container">
-      <!-- <div class="container px-4">
-        <div class="row gx-5" >
-            <div class="col-md-6" th:each="product : ${productslist}" id="col">
-              <div class="span-3 border bg-light" style="margin-top: 15px;">
-                <span><img th:src="${product.photosImagePath}" width="100px" height="100px" /></span>
-                <span th:text="${product.name}" style="font-weight: bold;"></span><br>
-                <label for="product_code">Product code : </label>
-                <span th:text="${product.product_code}" name="product_code"></span><br>
-                <label for="category">Category : </label>
-                <span th:text="${product.category_id.category_id}" name="category"></span>
-                <span th:text="${product.description}" class="description"></span>
+    <div class="container-fluid" id="container-fluid">
+
+      <div class="grid-container">
+        <div class="row ">
+          <div class="col" th:each="stock : ${stocklist}" id="grid-item">
+            <div class="card">
+              <img th:src="${stock.product.photosImagePath}" class="product-img">
+              <img src="/images/in-stock.png" alt="" class="stock">
+              <div class="card-content" id="card-content">
+                <h2 th:text="${stock.product.name}"></h2>
+                <p class="h6" th:if="${stock.product.category_id.category_id == 1}" hidden>Fruits</p>
+                <p class="h6" th:if="${stock.product.category_id.category_id == 5}" hidden>Vegetables</p>
+                <p th:text="${stock.product.description}" class="description"></p>
+
+                <div class="button-group">
+                  <a th:href="@{/adminhome/products/deleteProduct/{id}(id=${stock.product_id})}" id="delete"
+                    class="btn btn-danger" th:attr="data-product-id=${stock.product_id}"> <i
+                      class="fa fa-trash"></i></a>
+                  <!-- <a th:href="@{/adminhome/stock/addToStock/{id}(id=${stock.product.product_id})}"
+                      class=" btn btn-danger"><i class="fa fa-plus"></i> Add to stock</a> -->
+                </div> 
+                
+
               </div>
             </div>
+          </div>
         </div>
-      </div> -->
-      <div class="row gx-5">
-        <div class="col-md-4 mb-3" th:each="product : ${productslist}">
-          <div class="card">
-            <img th:src="${product.photosImagePath}">
-            <div class="card-content">
-              <h2 th:text="${product.name}"></h2>
-              <!-- <span th:text="${product.category_id.category_id}" class="id"></span><br> -->
-              <p class="h6" th:if="${product.category_id.category_id == 1}" hidden>Fruits</p>
-              <p class="h6" th:if="${product.category_id.category_id == 5}" hidden>Vegetables</p>
-              <p th:text="${product.description}" class="description"></p>
-              <a th:href="@{/adminhome/stock/addToStock/{id}(id=${product.product_id})}" class=" btn btn-danger" ><i class="fa fa-plus" ></i> Add to stock</a>
+        <div class="row">
+          <div class="col" th:each="product : ${productslist}" id="grid-item">
+            <div class="card">
+              <img th:src="${product.photosImagePath}" class="product-img">
+              <img src="/images/out-of-stock.png" alt="" class="stock">
+              <div class="card-content">
+                <h2 th:text="${product.name}"></h2>
+                <p class="h6" th:if="${product.category_id.category_id == 1}" hidden>Fruits</p>
+                <p class="h6" th:if="${product.category_id.category_id == 5}" hidden>Vegetables</p>
+                <p th:text="${product.description}" class="description"></p>
+               
+
+                <div class="button-group">
+                  <a th:href="@{/adminhome/products/delete/{id}(id=${product.product_id})}" id="deleteButton"
+                    class="btn btn-danger"> <i
+                      class="fa fa-trash"></i></a>
+                      <a th:href="@{/adminhome/stock/addToStock/{id}(id=${product.product_id})}" class=" btn btn-danger" id="addButton"><i
+                        class="fa fa-plus"></i> Add to stock</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-
       <!-- <form th:action="@{/adminhome/stock/addToStock}" method="post">
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true"> 
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -108,21 +136,38 @@
            </div>
           </div>
         </form>    -->
-        
-        
+
+    </div>
+
+  </div>
+  <!-- Delete Modal -->
+  <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog" aria-labelledby="removeModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="removeModalCenterTitle">Delete alert</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeButton">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="error" class="text-danger"></p>
+          <p class="alert alert-danger">
+            Are You sure You want to delete this product?
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn  btn-secondary" data-dismiss="modal" id="cancelButton">Cancel</button>
+          <a href="" class="btn btn-danger" id="delRef">Delete</a>
+        </div>
+      </div>
     </div>
   </div>
+  <!-- End -->
+  <script src="/js/listproducts.js"></script>
+  <script src="/js/fragments.js"></script>
 
-  <script>
-    // $(document).ready(function(){
-    //   $(".card #addButton").click(function(e){
-    //     $("#addModal").modal('show');
-    //   });
-    //   $("#closeButton , #cancelButton").on('click',function(){
-    //     $("#addModal").modal('hide');
-    //   });
-    // });
-  </script>
 </body>
 
 </html>

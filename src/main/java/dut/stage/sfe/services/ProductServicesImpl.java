@@ -34,5 +34,17 @@ public class ProductServicesImpl implements ProductServices{
     public Long getTotalProducts() {
         return repository.count();
     }
+
+    @Override
+    public List<Product> searchProducts(String query) {
+       return repository.searchProducts(query);
+    }
+
+    @Override
+    public void deleteById(int id) {
+       repository.deleteById(id);
+    }
+
+   
     
 }

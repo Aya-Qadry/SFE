@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Categories</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -14,101 +14,117 @@
         crossorigin="anonymous"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+
+
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
     <script src="/js/fragments.js"></script>
+    <script src="/js/categories.js"></script>
+
     <link rel="stylesheet" href="/css/fragments.css">
 
+    <link rel="stylesheet" href="/css/table.css">
+    <link rel="stylesheet" href="/css/search.css">
+    <style>
+        #tblDesc {
+            display: -webkit-box;
+            max-width: 400px;
+            width: 400px;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #enabled {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div th:replace="fragments :: nav"></div>
+    <div th:replace="~{fragments :: nav(search=true)}"></div>
 
     <div class="main-container d-flex">
+        <div class="preloader flex-column justify-content-center align-items-center" style="background-color: white;">
+            <img class="animation" src="/images/Horizonal-A-Logo.jpg" alt="AvonFruitsLogo" height="30%" width="50%">
+        </div>
+
+
         <div th:replace="fragments :: menu"></div>
 
-        <div class="container">
-            <h3>Types of products</h3>
-            <a class="btn btn-outline-success" id="showModal" style="margin: 10px;" href="#addModal" data-toggle="modal"
-                data-target="#addModal">+ Add a category</a>
+        <div class="container-fluid" id="container-fluid">
+            <div align="center" class=" entireTbl" style="overflow: auto;">
+                <div class="top">
+                    <h4>Categories table</h4>
+                    <a class="btn btn-outline-success" id="showModal" style="margin: 10px;" href="#addModal"
+                        data-toggle="modal" data-target="#addModal"><i style="margin-right: 3px;"
+                            class="far fa-plus"></i>
+                        Add a category</a>
+                </div>
 
+                <table class="tbl" id="catgeoriesTable">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Activated</th>
+                            <th>Created at</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+                        <tr th:each="category : ${categorieslist}">
+                            <td th:text="${category.category_id}" id="id"></td>
+                            <td th:text="${category.name}" id="name"></td>
+                            <td th:text="${category.description}" id="tblDesc"></td>
+                            <td id="enabled" th:if="${category.enabled==true}"><i class="fas fa-check-circle"
+                                    style="color: #44a758;"></i></td>
+                            <td id="enabled" th:if="${category.enabled==false}"><i class="far fa-times-circle"
+                                    style="color: #cb1010;"></i></td>
+                            <td th:text="${#temporals.format(category.date, 'MMMM d, yyyy HH:mm')}" id="date"></td>
+                            <td>
+                                <a th:href="@{/adminhome/products/categories/deleteCategory/{id}(id=${category.category_id})}"
+                                    id="deleteButton" class="btn" style="padding: 0;"
+                                    th:attr="data-category-id=${category.category_id}">
+                                    <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
 
-            <div class="l">
-                <form th:action="@{/adminhome/products/categories/addcategory}" method="post">
-                    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal"
-                        aria-hidden="true">
+                                <a th:href="@{/adminhome/products/categories/showCategory/{id}(id=${category.category_id})}"
+                                    class="btn" id="infoButton" style="padding: 0;">
+                                    <i class="far fa-info-circle" style="color: #398fac;"></i></a>
 
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Add a category</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                                        id="closeButton">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body" id="modal-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <tr>
-                                                <th>Category's name</th>
-                                                <td>
-                                                    <input type="text" id="name" class="form-control form-control-lg"
-                                                        autofocus name="name" />
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>Description</th>
-                                                <td>
-                                                    <textarea class="form-control" id="description" rows="7"
-                                                        name="description"></textarea>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            id="cancelButton">Cancel</button>
-                                        <input type="submit" class="btn btn-success " value="Save" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                                <a th:href="@{/adminhome/products/categories/editCategory/{id}(id=${category.category_id})}"
+                                    class="btn" id="editButton" style="padding: 0;">
+                                    <i class="fal fa-edit" style="color: #37a136;"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Pagination -->
+                <div class="card-footer ">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        Total Items [[${totalItems}]] : Page [[${currentPage}]] of [[${totalPages}]]
+                        &nbsp; &nbsp
+                    </ul>
+                    <ul class="pagination pagination-sm m-0 float-left"
+                        th:each="i: ${#numbers.sequence(1, totalPages)}">
+
+                        <!-- <li class="page-item"><a class="page-link" href="#">«</a></li> -->
+                        <li class="page-item"><a class="page-link"
+                                th:href="@{'/adminhome/products/categories/' + ${i}}">[[${i}]]</a></li>
+                        <!-- <li class="page-item"><a class="page-link" href="#">»</a></li> -->
+                        &nbsp; &nbsp;
+
+                    </ul>
+                </div>  
+                <!-- End pagination -->
             </div>
-            <!-- END -->
-
-            <table class="table table-striped">
-                <thead> 
-                    <tr>
-                        <th>Type</th>
-                        <th>Description</th>
-                        <th>Activated</th>
-                        <th>Created at</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="category : ${categorieslist}">
-                        <td th:text="${category.name}" id="name"></td>
-                        <td th:text="${category.description}" id="description"></td>
-                        <td th:text="${category.enabled}"></td>
-                        <td th:text="${category.date}" id="date"></td>
-                        <td>
-                            <a th:href="@{/adminhome/products/categories/deleteCategory/{id}(id=${category.category_id})}"
-                                id="deleteButton" class="btn" style="padding: 0;">
-                                <i class="fal fa-trash-alt" style="color: #ff0000;"></i></a>
-
-                            <a th:href="@{/adminhome/products/categories/showCategory/{id}(id=${category.category_id})}"
-                                class="btn" id="infoButton" style="padding: 0;">
-                                <i class="far fa-info-circle" style="color: #398fac;"></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
             <!-- Delete modal -->
             <div class="modal fade" id="removeModalCenter" tabindex="-1" role="dialog"
                 aria-labelledby="removeModalCenterTitle" aria-hidden="true">
@@ -122,6 +138,7 @@
                             </button>
                         </div>
                         <div class="modal-body">
+                            <p id="error" class="text-danger"></p>
                             <p class="alert alert-danger">
                                 Are You sure You want to delete this category?
                             </p>
@@ -170,53 +187,110 @@
                 </div>
             </div>
 
+            <!-- Update Modal -->
+            <form th:action="@{/adminhome/products/categories/editCategory}" method="post" id="updateform">
+                <div class="modal fade" id="editModalCenter" tabindex="-1" role="dialog"
+                    aria-labelledby="editModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Category's details</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                    id="close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="modal-body">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr hidden>
+                                                <td hidden><input type="text" name="category_id" id="category_id"
+                                                        value=""></td>
+
+                                            </tr>
+                                            <tr>
+                                                <th>Name</th>
+                                                <td><input type="text" class="form-control" id="name" name="name"
+                                                        value="" required>
+                                                    <p class="text-danger"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Description</th>
+                                                <td> <textarea name="description" class="form-control" id="description"
+                                                        cols="30" rows="10" required></textarea>
+                                                    <p class="text-danger"></p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer" id="modal-footer">
+                                <button class="btn btn-success" type="submit">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- ADD MODAL -->
+            <div class="l">
+                <form th:action="@{/adminhome/products/categories/addcategory}" method="post" id="addform">
+                    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal"
+                        aria-hidden="true">
+
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle">Add a category</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                        id="closeButton">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="modal-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>Category's name</th>
+                                                <td>
+                                                    <input type="text" id="name" class="form-control form-control-lg"
+                                                        autofocus name="name" required />
+                                                    <p class="text-danger"></p>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>Description</th>
+                                                <td>
+                                                    <textarea class="form-control" id="description" rows="7"
+                                                        name="description" required></textarea>
+                                                    <p class="text-danger"></p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            id="cancelButton">Cancel</button>
+                                        <input type="submit" class="btn btn-success " value="Save" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- END -->
 
         </div>
     </div>
 
-    <script>
-        $(document).ready(function () {
-            // add button
-            $("#showModal").click(function (e) {
-                e.preventDefault();
-                $("#addModal").modal('show');
-                $('#closeButton , #cancelButton').on('click', function (e) {
-                    $("#addModal").modal('hide');
-                });
-            });
+    <script src="/js/categories.js"></script>
+    <script src="/js/fragments.js"></script>
 
-            // delete button
-            $('.table #deleteButton').on('click', function (event) {
-                event.preventDefault();
-                var href = $(this).attr('href');
-                $('#removeModalCenter #delRef').attr('href', href);
-                $.get(href, function (category, status) {
-                    $('#removeModalCenter #category_id').val(category.category_id);
-                });
-                $('#removeModalCenter').modal('show');
-                $('#cancelButton , #closeButton').on('click', function () {
-                    $('#removeModalCenter').modal('hide');
-                });
-            });
-
-            //info button
-            $('.table #infoButton').click(function (e) {
-                e.preventDefault();
-                var href = '';
-                href = $(this).attr('href');
-                // $("#infoButton").attr('href',href);
-                $.get(href, function (category, status) {
-                    $('#infoModalCenter #name').val(category.name);
-                    $('#infoModalCenter #description').val(category.description);
-                });
-                $('#infoModalCenter').modal('show');
-                $('#closeBtn').click(function () {
-                    $('#infoModalCenter').modal('hide');
-                });
-            });
-
-        });
-    </script>
 </body>
 
 </html>

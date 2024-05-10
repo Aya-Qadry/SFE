@@ -40,50 +40,23 @@ public class SecurityConfig{
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
-    
-    // @Bean
-    // public InMemoryUserDetailsManager userDetailsManager(){
-    //     UserDetails admin =  User.withDefaultPasswordEncoder()
-    //     .username("test@gmail.com")
-    //     .password("Aaa@eope78")
-    //     .roles("ADMIN")
-    //     .build();
-    //     return new InMemoryUserDetailsManager();
-    // }
-    //remplacer configure(HttpSecurity http)
-
-
+     
     @Bean
     public SecurityFilterChain configure(HttpSecurity https) throws Exception{
         https   
                 .csrf((csrf)->csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/signup/**","/avonfruits/users/auth/**").permitAll()
+                        .requestMatchers("/css/**","/js/**","/images/**","/signup/**","/avonfruits/users/auth/**" ).permitAll()
                         .anyRequest().authenticated())
                 .formLogin((form) -> form
                         .loginPage("/avonfruits/users/auth/login")
                         .usernameParameter("emailaddress")
                         .passwordParameter("password")
                         .successHandler(loginSuccess)
-                        .failureForwardUrl("/403")
                         .permitAll())
                 .logout(logout -> logout.logoutUrl("/do_logout")
                         .logoutSuccessUrl("/login"))
                 .authenticationProvider(authenticationProvider());
-                
         return https.build();
     }
-
-
-    
-    // @Bean
-    // public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfiguration) throws Exception {
-    //   return authConfiguration.getAuthenticationManager();
-    // }
-//     @Bean
-//     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-//         return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                 .build();
-//     }
-// }
 }

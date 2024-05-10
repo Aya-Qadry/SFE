@@ -1,150 +1,208 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
-    crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" 
-    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" 
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add vendor</title>
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+    integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
     crossorigin="anonymous"></script>
 
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
-    <script src="/js/fragments.js"></script>
-    <link rel="stylesheet" href="/css/fragments.css">
+  <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
 
-    <style>
-      .row{
-        max-height: 82px;
-      }
-      #createButton{
-        background-color: rgb(70, 144, 70);
-        color: white;
-      }
-      #createButton:hover{
-        background-color: rgb(5, 109, 5);
-      }
-    </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+
+  <link rel="stylesheet" href="/css/fragments.css">
+  <link rel="stylesheet" href="/css/adduser.css">
+
+  <script src="/js/fragments.js"></script>
+
 </head>
+
 <body>
-  <div th:include="fragments :: nav" ></div>  
+  <div th:replace="fragments :: nav"></div>
 
   <div class="main-container d-flex">
 
-    <div th:include="fragments :: menu" ></div>   
+    <div class="preloader flex-column justify-content-center align-items-center" style="background-color: white;">
+      <img class="animation" src="/images/Horizonal-A-Logo.jpg" alt="AvonFruitsLogo" height="30%" width="50%">
+    </div>
+    <div th:replace="fragments :: menu"></div>
 
-    <div class="container">
- 
-        <div class="card-body p-2 p-md-4">
-            <h4>Create a new Vendor </h4>
-        </div>
+    <div class="container-fluid" id="container-fluid">
+
+      <div class="form-container">
+        <h4>Create a new Vendor </h4>
 
         <form th:action="@{/adminhome/add}" method="post" id="form" th:object="${vendor}">
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                  <div class="form-floating">
-                    <input type="text" id="firstname" class="form-control form-control-lg" name="firstname" autofocus/>
-                    <label class="form-label" for="firstname">First name</label>
-                  </div>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div class="form-floating">
-                    <input type="text" id="lastname" class="form-control form-control-lg"  name="lastname"/>
-                    <label class="form-label" for="lastname">Last name</label>
-                  </div>
-                </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-4">
+              <div class="form-floating">
+                <input type="text" id="firstname" class="form-control form-control-lg" name="firstname" autofocus  th:field="*{firstname}"/>
+                <label class="form-label" for="firstname">First name</label>
+                <p th:if="${#fields.hasErrors('firstname')}" class="text-danger" th:errors="*{firstname}">
+
+              </div>
             </div>
+            <div class="col-md-6 mb-4">
+              <div class="form-floating">
+                <input type="text" id="lastname" class="form-control form-control-lg" name="lastname" th:field="*{lastname}"/>
+                <label class="form-label" for="lastname">Last name</label>
+                <p th:if="${#fields.hasErrors('lastname')}" class="text-danger" th:errors="*{lastname}">
+
+              </div>
+            </div>
+          </div>
+          <div class="row-mb-5">
+            <div class="col-md-6 mb-4">
+              <div class="form-floating">
+                <input type="text" id="cin" class="form-control form-control-lg" name="cin" th:field="*{cin}"/>
+                <label class="form-label" for="cin">CIN</label>
+                <p th:if="${#fields.hasErrors('cin')}" class="text-danger" th:errors="*{cin}">
+                <p class="text-danger" th:text="${cin}"></p>
+
+              </div>
+            </div>
+            <div class="col-md-6 mb-4">
+              <div class="form-floating mb-4">
+                <input type="text" id="phonenumber" class="form-control form-control-lg" name="phonenumber" th:field="*{phonenumber}" />
+                <label class="form-label" for="phonenumber">Phone number</label>
+                <p th:if="${#fields.hasErrors('phonenumber')}" class="text-danger" th:errors="*{phonenumber}">
+                <p class="text-danger" th:text="${phone}"></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-">
+              <!-- <label class="form-label">Gender </label> -->
+              <select name="gender" class="form-select" th:field="*{gender}">
+                <option value="">Select a gender</option>
+                <option th:value="Male" th:text="Male"></option>
+                <option th:value="Female" th:text="Female"></option>
+              </select>
+              <p th:if="${#fields.hasErrors('gender')}" class="text-danger" th:errors="*{gender}">
+
+            </div>
+          </div>
+          <div th:object="${deliveryAddress}">
             <div class="row">
+              <div class="col-md-6 mb-4">
+                <!-- <label class="form-label" for="city">City </label> -->
+                <select id="city-select" name="city" class="form-select" >
+                  <option value="">Select a city</option>
+                </select>
+                <!-- <p th:text="${cityerror}" class="text-danger"> -->
+              </div>
               <div class="col-md-6 mb-4">
                 <div class="form-floating">
-                <input type="text" id="cin" class="form-control form-control-lg"  name="cin"/>
-                <label class="form-label" for="cin">CIN</label>
-                </div>
-              </div>
-              <div class="col-md-6 mb-4">
-                <div class="form-floating mb-4">
-                  <input type="text" id="phonenumber" class="form-control form-control-lg" name="phonenumber"/>
-                  <label class="form-label" for="phonenumber">Phone number</label>
-                </div>
-              </div>
-            </div>
-                
-            <div class="row">
-              <div class="col-md-6 mb-4">
-                <!-- <label class="form-label">Gender </label> -->
-                <select name="gender" class="form-select">
-                  <option value="">Select a gender</option>
-                  <option th:value="'Male'" th:text="Male"></option>
-                  <option th:value="'Female'" th:text="Female"></option>
-               </select>
-            </div>
-            </div>
-            <div th:object="${deliveryAddress}">
-              <div class="row" >
-                <div class="col-md-6 mb-4">
-                  <label class="form-label" for="city">City </label>
-                  <select  id="city-select" name="city" class="form-select">
-                      <option value="">Select a city</option>
-                  </select>
-                </div>
-                <div class="col-md-6 mb-4">
-                  <div class="form-floating">
-                  <input type="text" id="zipcode" class="form-control form-control-lg"  name="zipcode"/>
+                  <input type="text" id="zipcode" class="form-control form-control-lg" name="zipcode"
+                    th:field="*{zipcode}" />
                   <label class="form-label" for="zipcode">Zip code</label>
-                  </div>
+                  <p th:if="${#fields.hasErrors('zipcode')}" class="text-danger" th:errors="*{zipcode}">
+
                 </div>
               </div>
+            </div>
             <div class="row">
               <div class="col-md-13 mb-4">
                 <div class="form-floating mb-4">
-                  <input type="text" id="address" class="form-control form-control-lg" name="addressline"/>
+                  <input type="text" id="address" class="form-control form-control-lg" name="addressline"
+                    th:field="*{addressline}" />
                   <label class="form-label" for="address">Delivery address</label>
+                  <p th:if="${#fields.hasErrors('addressline')}" class="text-danger" th:errors="*{addressline}">
+
                 </div>
               </div>
             </div>
           </div>
-        
-            <div class="row">
-              <div class="col-md-13 mb-4">
-                <div class="form-floating mb-4">
-                  <input type="text" id="emailaddress" class="form-control form-control-lg" name="emailaddress"/>
-                  <label class="form-label" for="emailaddress">Email address</label>
-                </div>
+
+          <div class="row">
+            <div class="col-md-13 mb-4">
+              <div class="form-floating mb-4">
+                <input type="text" id="emailaddress" class="form-control form-control-lg" name="emailaddress" th:field="*{emailaddress}"/>
+                <label class="form-label" for="emailaddress">Email address</label>
+                <p th:if="${#fields.hasErrors('emailaddress')}" class="text-danger" th:errors="*{emailaddress}">
+                <p class="text-danger" th:text="${email}"></p>
+
               </div>
             </div>
-            
-              <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-success btn-lg gradient-custom-4 " id="createButton">Create vendor</button>
-              </div>
-          
-        </form>
-    </div>
-  </div>  
-  
-    <script>
-      const citySelect = document.getElementById("city-select");
-    const url = "http://api.geonames.org/searchJSON?q=*&country=MA&maxRows=1000&username=lamar";
+          </div>
 
-    // Fetch the data from the GeoNames API
-    fetch(url)
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-success btn-lg gradient-custom-4 " id="createButton">Create
+              vendor</button>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const citySelect = document.getElementById("city-select");
+      const url = "http://api.geonames.org/searchJSON?q=*&country=MA&maxRows=1000&username=lamar";
+
+      // Fetch the data from the GeoNames API
+      fetch(url)
         .then(response => response.json())
         .then(data => {
-            // Loop through the data and add options to the select element
-            data.geonames.forEach(city => {
-                const option = document.createElement("option");
-                option.value = city.name;
-                option.textContent = city.name;
-                citySelect.appendChild(option);
-            });
+          // Loop through the data and add options to the select element
+          data.geonames.forEach(city => {
+            const option = document.createElement("option");
+            option.value = city.name;
+            option.textContent = city.name;
+            citySelect.appendChild(option);
+          });
+          var selectedCity = sessionStorage.getItem("selectedCity");
+          if (selectedCity) {
+            citySelect.value = selectedCity;
+          }
         })
         .catch(error => console.error(error));
 
-    </script>
-    <script src="/js/fragments.js"></script>
+      // Event listener to store the selected city value in local storage
+      citySelect.addEventListener("change", function () {
+        var selectedValue = this.value;
+        sessionStorage.setItem("selectedCity", selectedValue);
+      });
+    });
+
+
+    $(document).ready(function () {
+      $('#form').submit(function (event) {
+        var citySelect = $('#city-select').val();
+
+        $('.alert').remove();
+        if (citySelect === '') {
+          event.preventDefault();
+          showAlert('Please select a city !', 'alert-danger');
+        }
+      });
+      function showAlert(message, type) {
+        var alertDiv = $('<div>').addClass('alert ' + type).text(message);
+        $('#form').prepend(alertDiv);
+      }
+    });
+  </script>
+
+  <script src="/js/fragments.js"></script>
 </body>
+
 </html>

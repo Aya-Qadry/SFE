@@ -5,26 +5,38 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "products")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Product {
 
-    @Id
+    @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private int product_id;
 
-    @Column(nullable = true, length = 128)
+    @Column(nullable = false, length = 128)
+    // @NotBlank(message = "Must upload an image of your product")
     private String photos;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = false)
+    @NotNull(message = "Choose a correspondant category")
+    @JoinColumn(name = "category_id", referencedColumnName = "category_id", nullable = false) 
     private Category category_id;
 
+
+    @NotEmpty(message = "Fill the description field")
     private String description;
+
+    @NotEmpty(message = "Fill the name field")
     private String name; 
+
+    @NotEmpty(message = "Fill the product's code field")
     private String product_code;
 
     @Transient

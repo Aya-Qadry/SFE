@@ -1,6 +1,6 @@
 package dut.stage.sfe;
 
-import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringApplication; 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.SpringVersion;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 @SpringBootApplication
-@EnableJpaRepositories 
+@EnableJpaRepositories  
 public class SfeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SfeApplication.class, args);
@@ -21,12 +21,5 @@ public class SfeApplication {
 		String password = "@Test1234!";
 		String newadminpass = "Heelo@ope78";
 		System.out.println(encoder.encode(password));
-
 	}
-	// @Bean
-    // public ObjectMapper objectMapper() {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-    //     return objectMapper;
-    // }
 }

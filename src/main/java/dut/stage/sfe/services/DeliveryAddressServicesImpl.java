@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import dut.stage.sfe.dao.DeliveryAddressRepository;
 import dut.stage.sfe.model.DeliveryAddress;
 import dut.stage.sfe.model.User;
-import dut.stage.sfe.model.Vendor;
 
 @Service
 public class DeliveryAddressServicesImpl implements DeliveryAddressServices {
@@ -45,6 +44,5 @@ public class DeliveryAddressServicesImpl implements DeliveryAddressServices {
     public void deleteByUserid(int user_id) {
         repository.deleteByUserid(user_id);
     }
-
 
 }

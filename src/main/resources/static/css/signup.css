@@ -1,5 +1,50 @@
-#togglePassword , #togglePasswordConfirm{
+#togglePassword,
+#togglePasswordConfirm {
     cursor: pointer;
     margin: 5px;
     margin-right: 10px;
 }
+
+.form-container {
+    background-color: #f4f2ef;
+    /* justify-content: center; */
+    max-width: 700px;
+    margin-inline: auto;
+    border-radius: 15px;
+    padding: 40px;
+    margin-bottom: 40px;
+
+}
+
+.form-container .btn {
+    background-color: #688c52;
+    color: #f4f2ef;
+}
+
+.container .card-body {
+    text-align: center;
+    justify-content: center;
+    text-decoration-color: none;
+    margin-top: 60px;
+    color: #f4f2ef;
+}
+
+@keyframes move {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+body {
+    background-image: url("/images/background-.svg");
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    animation: move 5s linear infinite ;
+    /* overflow: hidden; */
+}
+html,body{overflow-y: scroll; }

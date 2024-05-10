@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add user</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -16,12 +16,93 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
     <script src="/js/fragments.js"></script>
     <link rel="stylesheet" href="/css/fragments.css">
+    <style>
+        /* CSS Styles */
+        .form-container {
+            max-width: 1000px;
+            padding: 1em 3em 2em 3em;
+            margin: 0 auto;
+            background-color: #fbf7f1;
+            border-radius: 20px;
+            box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+            max-height: min-content;
+        }
 
-    <script>
+        .form-floating {
+            margin-bottom: 1em;
+        }
 
-    </script>
+        .form-floating input,
+        .form-floating select {
+            width: 100%;
+            padding: 1em;
+            line-height: 1.4;
+            border: 1px solid #e5e5e5;
+            border-radius: 3px;
+            -webkit-transition: 0.35s ease-in-out;
+            -moz-transition: 0.35s ease-in-out;
+            -o-transition: 0.35s ease-in-out;
+            transition: 0.35s ease-in-out;
+            transition: all 0.35s ease-in-out;
+        }
+
+        .form-floating input:focus,
+        .form-floating select:focus {
+            outline: 0;
+            border-color: #f69000;
+        }
+
+        .text-danger {
+            color: red;
+        }
+
+        .form-select {
+            height: 3.4em;
+            line-height: 2;
+        }
+
+        .btn-success {
+            background-color: #f69000;
+            border-color: #f69000;
+        }
+
+        .btn-success:hover {
+            background-color: #db8001;
+            border-color: #db8001;
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .form-select option {
+            opacity: .5;
+            transform: scale(.85) translateY(-0.5rem) translateX(0.15rem);
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
 </head>
 
 <body>
@@ -30,145 +111,226 @@
     <div class="main-container d-flex">
         <div th:replace="fragments :: menu"></div>
 
-        <div class="container">
-            <div class="card-body p-2 p-md-4">
-                <h4>Create a new User </h4>
-            </div>
+        <div class="container-fluid" id="container-fluid">
 
-            <form th:action="@{/adminhome/users/addUser}" method="post" id="form" th:object="${user}">
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="form-floating">
-                            <input type="text" id="firstname" class="form-control form-control-lg" name="firstname"
-                                autofocus />
-                            <label class="form-label" for="firstname">First name</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="form-floating">
-                            <input type="text" id="lastname" class="form-control form-control-lg" name="lastname" />
-                            <label class="form-label" for="lastname">Last name</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="form-floating">
-                            <input type="text" id="cin" class="form-control form-control-lg" name="cin" />
-                            <label class="form-label" for="cin">CIN</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="form-floating mb-4">
-                            <input type="text" id="phonenumber" class="form-control form-control-lg"
-                                name="phonenumber" />
-                            <label class="form-label" for="phonenumber">Phone number</label>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <select name="gender" class="form-select">
-                            <option value="">Select a gender</option>
-                            <option th:value="'Male'" th:text="Male"></option>
-                            <option th:value="'Female'" th:text="Female"></option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <select name="roleId" class="form-select" id="roleSelect">
-                            <option value="">Select a role</option>
-                            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"></option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-13 mb-4">
-                        <select name="vendorId" id="vendorSelect" style="display: none; margin-top: 15px;" class="form-select">
-                            <option value="">Select a vendor</option>
-                            <option th:each="vendor : ${vendors}" th:value="${vendor.user_id}"
-                                th:text="${vendor.firstname +' '+ vendor.lastname}"></option>
-                        </select>
-                    </div>
-                </div>
-                <div th:object="${deliveryAddress}">
+            <div class="form-container">
+                <h5>Create a new user</h5>
+                <form th:action="@{/adminhome/users/addUser}" method="post" id="form" th:object="${user}">
+
                     <div class="row">
                         <div class="col-md-6 mb-4">
-                            <select id="city-select" name="city" class="form-select">
-                                <option value="">Select a city</option>
-                            </select>
+                            <div class="form-floating">
+                                <input type="text" id="firstname" class="form-control form-control-lg" name="firstname"
+                                    autofocus th:field="*{firstname}" />
+                                <label class="form-label" for="firstname">First name</label>
+                                <p th:if="${#fields.hasErrors('firstname')}" class="text-danger"
+                                    th:errors="*{firstname}">
+                                </p>
+                            </div>
                         </div>
                         <div class="col-md-6 mb-4">
                             <div class="form-floating">
-                                <input type="text" id="zipcode" class="form-control form-control-lg" name="zipcode" />
-                                <label class="form-label" for="zipcode">Zip code</label>
+                                <input type="text" id="lastname" class="form-control form-control-lg" name="lastname"
+                                    th:field="*{lastname}" />
+                                <label class="form-label" for="lastname">Last name</label>
+                                <p th:if="${#fields.hasErrors('lastname')}" class="text-danger" th:errors="*{lastname}">
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-13 mb-4">
+                        <div class="col-md-6 mb-4">
+                            <div class="form-floating">
+                                <input type="text" id="cin" class="form-control form-control-lg" name="cin"
+                                    th:field="*{cin}" />
+                                <label class="form-label" for="cin">CIN</label>
+                                <p th:if="${#fields.hasErrors('cin')}" class="text-danger" th:errors="*{cin}">
+                                <p th:text="${cin}" class="text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
                             <div class="form-floating mb-4">
-                                <input type="text" id="address" class="form-control form-control-lg"
-                                    name="addressline" />
-                                <label class="form-label" for="address">Delivery address</label>
+                                <input type="text" id="phonenumber" class="form-control form-control-lg"
+                                    name="phonenumber" th:field="*{phonenumber}" />
+                                <label class="form-label" for="phonenumber">Phone number</label>
+                                <p th:if="${#fields.hasErrors('phonenumber')}" class="text-danger"
+                                    th:errors="*{phonenumber}">
+                                <p th:text="${phone}" class="text-danger"></p>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-md-13 mb-4">
-                        <div class="form-floating mb-4">
-                            <input type="text" id="emailaddress" class="form-control form-control-lg"
-                                name="emailaddress" />
-                            <label class="form-label" for="emailaddress">Email address</label>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <select name="gender" class="form-select" th:field="*{gender}">
+                                <option value="">Select a gender</option>
+                                <option th:value="'Male'" th:text="Male"></option>
+                                <option th:value="'Female'" th:text="Female"></option>
+                            </select>
+                            <p th:if="${#fields.hasErrors('gender')}" class="text-danger" th:errors="*{gender}">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <select name="roleId" class="form-select" id="roleSelect">
+                                <option value="">Select a role</option>
+                                <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.name}"
+                                    th:field="*{roles}"></option>
+                            </select>
                         </div>
                     </div>
-                </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <select name="vendorId" id="vendorSelect" style=" margin-top: 5px;" disabled
+                                class="form-select">
+                                <option value=1>Select a vendor</option>
+                                <option th:each="vendor : ${vendors}" th:value="${vendor.user_id}"
+                                    th:text="${vendor.firstname +' '+ vendor.lastname}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div th:object="${deliveryAddress}">
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <select id="city-select" name="city" class="form-select">
+                                    <option value="">Select a city</option>
+                                </select>
+                                <p th:text="${cityerror}" class="text-danger">
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="form-floating">
+                                    <input type="text" id="zipcode" class="form-control form-control-lg" name="zipcode"
+                                        th:field="*{zipcode}" />
+                                    <label class="form-label" for="zipcode">Zip code</label>
+                                    <p th:if="${#fields.hasErrors('zipcode')}" class="text-danger"
+                                        th:errors="*{zipcode}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-13 mb-4">
+                                <div class="form-floating mb-4">
+                                    <input type="text" id="address" class="form-control form-control-lg"
+                                        name="addressline" th:field="*{addressline}" />
+                                    <label class="form-label" for="address">Delivery address</label>
+                                    <p th:if="${#fields.hasErrors('addressline')}" class="text-danger"
+                                        th:errors="*{addressline}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success btn-lg gradient-custom-4 " id="createButton">Create
-                        user</button>
-                </div>
+                    <div class="row">
+                        <div class="col-md-13 mb-4">
+                            <div class="form-floating mb-4">
+                                <input type="text" id="emailaddress" class="form-control form-control-lg"
+                                    name="emailaddress" th:field="*{emailaddress}" />
+                                <label class="form-label" for="emailaddress">Email address</label>
+                                <p th:if="${#fields.hasErrors('emailaddress')}" class="text-danger"
+                                    th:errors="*{emailaddress}">
+                                <p class="text-danger" th:text="${email}"></p>
+                            </div>
+                        </div>
+                    </div>
 
-            </form>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-success btn-lg gradient-custom-4 " id="createButton">Create
+                            user</button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     </div>
 
-    <script>
-        const citySelect = document.getElementById("city-select");
-        const url = "http://api.geonames.org/searchJSON?q=*&country=MA&maxRows=1000&username=lamar";
 
-        // Fetch the data from the GeoNames API
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                // Loop through the data and add options to the select element
-                data.geonames.forEach(city => {
-                    const option = document.createElement("option");
-                    option.value = city.name;
-                    option.textContent = city.name;
-                    citySelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error(error));
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const citySelect = document.getElementById("city-select");
+            const url = "http://api.geonames.org/searchJSON?q=*&country=MA&maxRows=1000&username=lamar";
+
+            // Fetch the data from the GeoNames API
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Loop through the data and add options to the select element
+                    data.geonames.forEach(city => {
+                        const option = document.createElement("option");
+                        option.value = city.name;
+                        option.textContent = city.name;
+                        citySelect.appendChild(option);
+                    });
+                    var selectedCity = sessionStorage.getItem("selectedCity");
+                    if (selectedCity) {
+                        citySelect.value = selectedCity;
+                    }
+                })
+                .catch(error => console.error(error));
+
+            // Event listener to store the selected city value in local storage
+            citySelect.addEventListener("change", function () {
+                var selectedValue = this.value;
+                sessionStorage.setItem("selectedCity", selectedValue);
+            });
+        });
+
 
         const roleselect = document.getElementById('roleSelect');
         const vendorselect = document.getElementById('vendorSelect');
-        console.log(roleselect.value);
 
         roleselect.addEventListener('change', function () {
 
             if (roleselect.value !== '3') {
-                vendorselect.style.display = "none";
+                vendorselect.setAttribute("disbaled", true);
             } else {
-                vendorselect.style.display = "block";
-               
+                vendorselect.removeAttribute("disabled");
             }
         });
 
+        $(document).ready(function () {
+            $('#form').submit(function (event) {
+
+                var roleSelect = $('#roleSelect').val();
+                var vendorSelect = $('#vendorSelect').val();
+                var citySelect = $('#city-select').val();
+
+                $('.alert').remove();
+
+                if (roleSelect === '') {
+                    event.preventDefault();
+                    showAlert('Please select a role !', 'alert-danger');
+                }
+                if (roleSelect === '3' && vendorSelect === '1') {
+                    event.preventDefault();
+                    showAlert('Please select a vendor !', 'alert-danger');
+                }
+                if (citySelect === '') {
+                    event.preventDefault();
+                    showAlert('Please select a city !', 'alert-danger');
+                }
+            });
+            function showAlert(message, type) {
+                var alertDiv = $('<div>').addClass('alert ' + type).text(message);
+                $('#form').prepend(alertDiv);
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // Retrieve the selected role value from local storage (if available)
+            var selectedValue = sessionStorage.getItem("selectedRole");
+
+            if (selectedValue) {
+                document.getElementById("roleSelect").value = selectedValue;
+            }
+            document.getElementById("roleSelect").addEventListener("change", function () {
+                var selectedValue = this.value;
+                sessionStorage.setItem("selectedRole", selectedValue);
+            });
+        });
+ 
 
     </script>
+    <script src="/js/fragments.js"></script>
+
 </body>
 
 </html>

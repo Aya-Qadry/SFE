@@ -3,6 +3,9 @@ package dut.stage.sfe.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import dut.stage.sfe.dao.RequestRepository;
@@ -47,6 +50,22 @@ public class RequestServicesImpl implements RequestServices{
     @Override
     public Long getTotalRequests() {
         return repository.count();
+    }
+
+    @Override
+    public List<Request> searchRequest(String query) {
+        return repository.searchRequest(query);
+    }
+
+    @Override
+    public Page<Request> findPage(int pageNumber) {
+        Pageable pageable = PageRequest.of(pageNumber - 1, 6);
+        return repository.findAll(pageable);
+    }
+
+    @Override
+    public Request findByCin(String cin) {
+        return repository.findByCin(cin);
     }
 
     
